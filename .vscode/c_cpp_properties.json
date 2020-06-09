@@ -8,6 +8,7 @@
             "includePath": [
                 "c:/Users/nzube/Documents/05_Programming/Filament_Box/include",
                 "c:/Users/nzube/Documents/05_Programming/Filament_Box/src",
+                "c:/Users/nzube/Documents/05_Programming/Filament_Box/lib/AHT10-master/src",
                 "C:/Users/nzube/.platformio/packages/framework-espidf/components/esp_ringbuf/include",
                 "C:/Users/nzube/Documents/05_Programming/Filament_Box/.pio/build/esp32dev/config",
                 "C:/Users/nzube/.platformio/packages/framework-espidf/components/newlib/platform_include",
@@ -117,6 +118,10 @@
                 "C:/Users/nzube/.platformio/packages/framework-arduinoespressif32-src-c69fc9322995db5694e2741d307d9723/libraries/WiFiClientSecure/src",
                 "C:/Users/nzube/.platformio/packages/framework-arduinoespressif32-src-c69fc9322995db5694e2741d307d9723/libraries/WiFi/src",
                 "C:/Users/nzube/.platformio/packages/framework-arduinoespressif32-src-c69fc9322995db5694e2741d307d9723/libraries/Wire/src",
+                "C:/Users/nzube/.platformio/lib/Adafruit ADXL343_ID6117",
+                "C:/Users/nzube/.platformio/lib/Adafruit AHTX0_ID7142",
+                "C:/Users/nzube/.platformio/lib/Adafruit BusIO_ID6214",
+                "C:/Users/nzube/.platformio/lib/Adafruit Unified Sensor_ID31",
                 "C:/Users/nzube/.platformio/packages/tool-unity",
                 ""
             ],
@@ -125,6 +130,7 @@
                 "path": [
                     "c:/Users/nzube/Documents/05_Programming/Filament_Box/include",
                     "c:/Users/nzube/Documents/05_Programming/Filament_Box/src",
+                    "c:/Users/nzube/Documents/05_Programming/Filament_Box/lib/AHT10-master/src",
                     "C:/Users/nzube/.platformio/packages/framework-espidf/components/esp_ringbuf/include",
                     "C:/Users/nzube/Documents/05_Programming/Filament_Box/.pio/build/esp32dev/config",
                     "C:/Users/nzube/.platformio/packages/framework-espidf/components/newlib/platform_include",
@@ -234,6 +240,10 @@
                     "C:/Users/nzube/.platformio/packages/framework-arduinoespressif32-src-c69fc9322995db5694e2741d307d9723/libraries/WiFiClientSecure/src",
                     "C:/Users/nzube/.platformio/packages/framework-arduinoespressif32-src-c69fc9322995db5694e2741d307d9723/libraries/WiFi/src",
                     "C:/Users/nzube/.platformio/packages/framework-arduinoespressif32-src-c69fc9322995db5694e2741d307d9723/libraries/Wire/src",
+                    "C:/Users/nzube/.platformio/lib/Adafruit ADXL343_ID6117",
+                    "C:/Users/nzube/.platformio/lib/Adafruit AHTX0_ID7142",
+                    "C:/Users/nzube/.platformio/lib/Adafruit BusIO_ID6214",
+                    "C:/Users/nzube/.platformio/lib/Adafruit Unified Sensor_ID31",
                     "C:/Users/nzube/.platformio/packages/tool-unity",
                     ""
                 ]
