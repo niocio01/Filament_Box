@@ -381,11 +381,11 @@
 		},
 		{
 			"backtrace" : 5,
-			"id" : "__idf_nghttp::@6ca59972b809fbe6ce53"
+			"id" : "__idf_esp-tls::@fec40229f530785b7d3e"
 		},
 		{
 			"backtrace" : 5,
-			"id" : "__idf_esp-tls::@fec40229f530785b7d3e"
+			"id" : "__idf_nghttp::@6ca59972b809fbe6ce53"
 		},
 		{
 			"backtrace" : 6,

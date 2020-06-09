@@ -163,7 +163,7 @@
 		},
 		{
 			"backtrace" : 3,
-			"id" : "__idf_main::@7368607ed66887415643"
+			"id" : "__idf_micro-ecc::@37158dc68a69c79f835a"
 		},
 		{
 			"backtrace" : 3,
@@ -171,7 +171,7 @@
 		},
 		{
 			"backtrace" : 3,
-			"id" : "__idf_micro-ecc::@37158dc68a69c79f835a"
+			"id" : "__idf_main::@7368607ed66887415643"
 		}
 	],
 	"id" : "bootloader.elf::@6890427a1f51a3e7e1df",

@@ -408,9 +408,9 @@ Linker script and memory map
 
 START GROUP
 LOAD .pio\build\esp32dev\bootloader\esp-idf\soc\libsoc.a
-LOAD .pio\build\esp32dev\bootloader\esp-idf\main\libmain.a
-LOAD .pio\build\esp32dev\bootloader\esp-idf\spi_flash\libspi_flash.a
 LOAD .pio\build\esp32dev\bootloader\esp-idf\micro-ecc\libmicro-ecc.a
+LOAD .pio\build\esp32dev\bootloader\esp-idf\spi_flash\libspi_flash.a
+LOAD .pio\build\esp32dev\bootloader\esp-idf\main\libmain.a
 LOAD .pio\build\esp32dev\bootloader\esp-idf\bootloader_support\libbootloader_support.a
 LOAD .pio\build\esp32dev\bootloader\esp-idf\efuse\libefuse.a
 LOAD .pio\build\esp32dev\bootloader\esp-idf\log\liblog.a

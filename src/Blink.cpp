@@ -11,38 +11,33 @@
 #include <driver/gpio.h>
 #include "sdkconfig.h"
 #include <Arduino.h>
+#include "esp_int_wdt.h"
+#include "esp_task_wdt.h"
 
 /* Can run 'make menuconfig' to choose the GPIO to blink,
    or you can edit the following line and set a number here.
 */
 #define BLINK_GPIO (gpio_num_t)CONFIG_BLINK_GPIO
-
-#ifndef LED_BUILTIN
 #define LED_BUILTIN 4
-#endif
+
+TaskHandle_t *blink_handle;
 
 void blink_task(void *pvParameter)
 {
-    /* Configure the IOMUX register for pad BLINK_GPIO (some pads are
-       muxed to GPIO on reset already, but some default to other
-       functions and need to be switched to GPIO. Consult the
-       Technical Reference for a list of pads and their default
-       functions.)
-    */
+    esp_task_wdt_add(blink_handle); //add task to watchdog checking list
     gpio_pad_select_gpio(BLINK_GPIO);
-    /* Set the GPIO as a push/pull output */
     gpio_set_direction(BLINK_GPIO, GPIO_MODE_OUTPUT);
     while(1) {
-        /* Blink off (output low) */
         gpio_set_level(BLINK_GPIO, 0);
         vTaskDelay(1000 / portTICK_PERIOD_MS);
-        /* Blink on (output high) */
+        
         gpio_set_level(BLINK_GPIO, 1);
         vTaskDelay(1000 / portTICK_PERIOD_MS);
+
+        esp_task_wdt_reset(); // reset watchdog
     }
 }
 
-#if !CONFIG_AUTOSTART_ARDUINO
 void arduinoTask(void *pvParameter) {
     pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
@@ -55,21 +50,12 @@ void arduinoTask(void *pvParameter) {
 
 extern "C" void app_main()
 {
+    esp_int_wdt_init(); // enable Interrupt watchdog
+    esp_task_wdt_init(5, false); // enable Task Watchdog Timer
+
     // initialize arduino library before we start the tasks
     initArduino();
 
-    xTaskCreate(&blink_task, "blink_task", configMINIMAL_STACK_SIZE, NULL, 5, NULL);
+    xTaskCreate(&blink_task, "blink_task", configMINIMAL_STACK_SIZE, NULL, 5, blink_handle);
     xTaskCreate(&arduinoTask, "arduino_task", configMINIMAL_STACK_SIZE, NULL, 5, NULL);
 }
-#else
-void setup() {
-    Serial.begin(115200);
-    xTaskCreate(&blink_task, "blink_task", configMINIMAL_STACK_SIZE, NULL, 5, NULL);
-    pinMode(LED_BUILTIN, OUTPUT);
-}
-void loop() {
-    digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-    Serial.println("Hello!");
-    delay(1000);
-}
-#endif 

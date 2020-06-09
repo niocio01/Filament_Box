@@ -575,12 +575,12 @@
 	"dependencies" : 
 	[
 		{
-			"backtrace" : 7,
-			"id" : "_project_elf_src::@6890427a1f51a3e7e1df"
-		},
-		{
 			"backtrace" : 3,
 			"id" : "__idf_esp_ringbuf::@ad62994b1ce98b81017d"
+		},
+		{
+			"backtrace" : 7,
+			"id" : "_project_elf_src::@6890427a1f51a3e7e1df"
 		},
 		{
 			"backtrace" : 11,
@@ -588,19 +588,7 @@
 		},
 		{
 			"backtrace" : 3,
-			"id" : "__idf_asio::@db1a8833e22596808d70"
-		},
-		{
-			"backtrace" : 3,
-			"id" : "__idf_nghttp::@6ca59972b809fbe6ce53"
-		},
-		{
-			"backtrace" : 3,
 			"id" : "__idf_console::@4311ed8d271cc0ee1422"
-		},
-		{
-			"backtrace" : 3,
-			"id" : "__idf_esp_adc_cal::@dc736dc1d836ef36c9a5"
 		},
 		{
 			"backtrace" : 3,
@@ -608,7 +596,7 @@
 		},
 		{
 			"backtrace" : 3,
-			"id" : "__idf_esp_gdbstub::@377a8c6ee3088554e323"
+			"id" : "__idf_nghttp::@6ca59972b809fbe6ce53"
 		},
 		{
 			"backtrace" : 3,
@@ -616,11 +604,11 @@
 		},
 		{
 			"backtrace" : 3,
-			"id" : "__idf_esp_http_client::@483ffd9ca1a06508c93f"
+			"id" : "__idf_asio::@db1a8833e22596808d70"
 		},
 		{
 			"backtrace" : 3,
-			"id" : "__idf_esp_http_server::@1e8eede8f41363800887"
+			"id" : "__idf_esp_http_client::@483ffd9ca1a06508c93f"
 		},
 		{
 			"backtrace" : 3,
@@ -628,7 +616,11 @@
 		},
 		{
 			"backtrace" : 3,
-			"id" : "__idf_esp_https_ota::@55ee5ec07370a5473c2b"
+			"id" : "__idf_esp_gdbstub::@377a8c6ee3088554e323"
+		},
+		{
+			"backtrace" : 3,
+			"id" : "__idf_esp_adc_cal::@dc736dc1d836ef36c9a5"
 		},
 		{
 			"backtrace" : 3,
@@ -636,15 +628,19 @@
 		},
 		{
 			"backtrace" : 3,
-			"id" : "__idf_protocomm::@d76d01c8dec06205e1fc"
+			"id" : "__idf_esp_http_server::@1e8eede8f41363800887"
 		},
 		{
 			"backtrace" : 3,
-			"id" : "__idf_expat::@af4f74c6fac3f93a3341"
+			"id" : "__idf_esp_https_ota::@55ee5ec07370a5473c2b"
 		},
 		{
 			"backtrace" : 3,
 			"id" : "__idf_mdns::@2f076c6da9dadb273cdc"
+		},
+		{
+			"backtrace" : 3,
+			"id" : "__idf_protocomm::@d76d01c8dec06205e1fc"
 		},
 		{
 			"backtrace" : 3,
@@ -656,15 +652,55 @@
 		},
 		{
 			"backtrace" : 3,
-			"id" : "__idf_sdmmc::@89ed5bca1750ffbc7db6"
-		},
-		{
-			"backtrace" : 3,
 			"id" : "__idf_fatfs::@75ac1d9b25dacc8cc9e7"
 		},
 		{
 			"backtrace" : 3,
+			"id" : "__idf_expat::@af4f74c6fac3f93a3341"
+		},
+		{
+			"backtrace" : 3,
 			"id" : "__idf_wear_levelling::@cb21b0d7c0815cff11c6"
+		},
+		{
+			"backtrace" : 3,
+			"id" : "__idf_sdmmc::@89ed5bca1750ffbc7db6"
+		},
+		{
+			"backtrace" : 3,
+			"id" : "__idf_json::@c78a8bdc820334f01148"
+		},
+		{
+			"backtrace" : 3,
+			"id" : "__idf_freemodbus::@de63ca74a1babc26b29c"
+		},
+		{
+			"backtrace" : 3,
+			"id" : "__idf_libsodium::@66e4f5d448f23c9449a2"
+		},
+		{
+			"backtrace" : 3,
+			"id" : "__idf_jsmn::@88dec008f06e3af609d0"
+		},
+		{
+			"backtrace" : 3,
+			"id" : "__idf_openssl::@e614527ea5fe5ca5f395"
+		},
+		{
+			"backtrace" : 3,
+			"id" : "__idf_mqtt::@c1ab2c6a99226d1f4b56"
+		},
+		{
+			"backtrace" : 3,
+			"id" : "__idf_framework-arduinoespressif32-src-c69fc9322995db5694e2741d307d9723::@027a252cb48b5e9a0172"
+		},
+		{
+			"backtrace" : 3,
+			"id" : "__idf_src::@2478b13de56d3028f688"
+		},
+		{
+			"backtrace" : 3,
+			"id" : "__idf_unity::@fec746937506b5690992"
 		},
 		{
 			"backtrace" : 3,
@@ -680,43 +716,7 @@
 		},
 		{
 			"backtrace" : 3,
-			"id" : "__idf_unity::@fec746937506b5690992"
-		},
-		{
-			"backtrace" : 3,
 			"id" : "__idf_spiffs::@df881b71474064c86689"
-		},
-		{
-			"backtrace" : 3,
-			"id" : "__idf_src::@2478b13de56d3028f688"
-		},
-		{
-			"backtrace" : 3,
-			"id" : "__idf_framework-arduinoespressif32-src-c69fc9322995db5694e2741d307d9723::@027a252cb48b5e9a0172"
-		},
-		{
-			"backtrace" : 3,
-			"id" : "__idf_libsodium::@66e4f5d448f23c9449a2"
-		},
-		{
-			"backtrace" : 3,
-			"id" : "__idf_freemodbus::@de63ca74a1babc26b29c"
-		},
-		{
-			"backtrace" : 3,
-			"id" : "__idf_jsmn::@88dec008f06e3af609d0"
-		},
-		{
-			"backtrace" : 3,
-			"id" : "__idf_json::@c78a8bdc820334f01148"
-		},
-		{
-			"backtrace" : 3,
-			"id" : "__idf_openssl::@e614527ea5fe5ca5f395"
-		},
-		{
-			"backtrace" : 3,
-			"id" : "__idf_mqtt::@c1ab2c6a99226d1f4b56"
 		}
 	],
 	"id" : "espidf-arduino-wifiscan.elf::@6890427a1f51a3e7e1df",

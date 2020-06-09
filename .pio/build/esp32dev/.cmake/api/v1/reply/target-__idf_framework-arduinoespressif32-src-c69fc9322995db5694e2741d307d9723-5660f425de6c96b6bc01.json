@@ -736,11 +736,11 @@
 					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/bootloader_support/include"
 				},
 				{
-					"backtrace" : 10,
+					"backtrace" : 11,
 					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/spiffs/include"
 				},
 				{
-					"backtrace" : 11,
+					"backtrace" : 10,
 					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/openssl/include"
 				}
 			],
@@ -1210,11 +1210,11 @@
 					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/bootloader_support/include"
 				},
 				{
-					"backtrace" : 10,
+					"backtrace" : 11,
 					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/spiffs/include"
 				},
 				{
-					"backtrace" : 11,
+					"backtrace" : 10,
 					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/openssl/include"
 				}
 			],
@@ -1267,10 +1267,6 @@
 		},
 		{
 			"backtrace" : 9,
-			"id" : "__idf_sdmmc::@89ed5bca1750ffbc7db6"
-		},
-		{
-			"backtrace" : 9,
 			"id" : "__idf_fatfs::@75ac1d9b25dacc8cc9e7"
 		},
 		{
@@ -1278,12 +1274,16 @@
 			"id" : "__idf_wear_levelling::@cb21b0d7c0815cff11c6"
 		},
 		{
+			"backtrace" : 9,
+			"id" : "__idf_sdmmc::@89ed5bca1750ffbc7db6"
+		},
+		{
 			"backtrace" : 10,
-			"id" : "__idf_spiffs::@df881b71474064c86689"
+			"id" : "__idf_openssl::@e614527ea5fe5ca5f395"
 		},
 		{
 			"backtrace" : 11,
-			"id" : "__idf_openssl::@e614527ea5fe5ca5f395"
+			"id" : "__idf_spiffs::@df881b71474064c86689"
 		}
 	],
 	"id" : "__idf_framework-arduinoespressif32-src-c69fc9322995db5694e2741d307d9723::@027a252cb48b5e9a0172",

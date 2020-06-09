@@ -3,7 +3,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "esp-idf/wifi_provisioning/libwifi_provisioning.a"
+			"path" : "esp-idf/esp_https_ota/libesp_https_ota.a"
 		}
 	],
 	"backtrace" : 2,
@@ -25,7 +25,7 @@
 		"files" : 
 		[
 			"C:/Users/nzube/.platformio/packages/framework-espidf/tools/cmake/component.cmake",
-			"C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning/CMakeLists.txt",
+			"C:/Users/nzube/.platformio/packages/framework-espidf/components/esp_https_ota/CMakeLists.txt",
 			"C:/Users/nzube/.platformio/packages/framework-espidf/tools/cmake/utilities.cmake"
 		],
 		"nodes" : 
@@ -36,7 +36,7 @@
 			{
 				"command" : 1,
 				"file" : 1,
-				"line" : 18,
+				"line" : 1,
 				"parent" : 0
 			},
 			{
@@ -64,24 +64,6 @@
 				"parent" : 4
 			},
 			{
-				"command" : 3,
-				"file" : 0,
-				"line" : 327,
-				"parent" : 3
-			},
-			{
-				"command" : 2,
-				"file" : 0,
-				"line" : 306,
-				"parent" : 6
-			},
-			{
-				"command" : 2,
-				"file" : 0,
-				"line" : 306,
-				"parent" : 6
-			},
-			{
 				"command" : 5,
 				"file" : 0,
 				"line" : 426,
@@ -97,7 +79,7 @@
 				"command" : 5,
 				"file" : 2,
 				"line" : 282,
-				"parent" : 10
+				"parent" : 7
 			},
 			{
 				"command" : 5,
@@ -121,37 +103,25 @@
 				"command" : 8,
 				"file" : 0,
 				"line" : 285,
-				"parent" : 14
+				"parent" : 11
 			},
 			{
-				"command" : 9,
+				"command" : 2,
 				"file" : 0,
-				"line" : 448,
-				"parent" : 1
+				"line" : 309,
+				"parent" : 4
 			},
 			{
-				"command" : 8,
+				"command" : 3,
 				"file" : 0,
-				"line" : 285,
-				"parent" : 16
-			},
-			{
-				"command" : 8,
-				"file" : 0,
-				"line" : 285,
-				"parent" : 16
-			},
-			{
-				"command" : 8,
-				"file" : 0,
-				"line" : 285,
-				"parent" : 16
+				"line" : 327,
+				"parent" : 3
 			},
 			{
 				"command" : 2,
 				"file" : 0,
 				"line" : 306,
-				"parent" : 6
+				"parent" : 14
 			}
 		]
 	},
@@ -164,87 +134,87 @@
 					"fragment" : "-mlongcalls -Wno-frame-address  "
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-ffunction-sections"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-fdata-sections"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-fstrict-volatile-bitfields"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-nostdlib"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-Wall"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-Werror=all"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-Wno-error=unused-function"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-Wno-error=unused-but-set-variable"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-Wno-error=unused-variable"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-Wno-error=deprecated-declarations"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-Wextra"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-Wno-unused-parameter"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-Wno-sign-compare"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-ggdb"
 				},
 				{
-					"backtrace" : 9,
+					"backtrace" : 6,
 					"fragment" : "-Og"
 				},
 				{
-					"backtrace" : 11,
+					"backtrace" : 8,
 					"fragment" : "-std=gnu99"
 				},
 				{
-					"backtrace" : 11,
+					"backtrace" : 8,
 					"fragment" : "-Wno-old-style-declaration"
 				},
 				{
-					"backtrace" : 12,
+					"backtrace" : 9,
 					"fragment" : "-D_GNU_SOURCE"
 				},
 				{
-					"backtrace" : 12,
+					"backtrace" : 9,
 					"fragment" : "-DIDF_VER=\\\"HEAD-HASH-NOTFOUND\\\""
 				},
 				{
-					"backtrace" : 12,
+					"backtrace" : 9,
 					"fragment" : "-DGCC_NOT_5_2_0"
 				},
 				{
-					"backtrace" : 12,
+					"backtrace" : 9,
 					"fragment" : "-DESP_PLATFORM"
 				}
 			],
@@ -252,30 +222,18 @@
 			[
 				{
 					"backtrace" : 5,
-					"define" : "MBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\""
+					"define" : "HAVE_CONFIG_H"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 13,
+					"backtrace" : 10,
 					"path" : "C:/Users/nzube/Documents/05_Programming/Filament_Box/.pio/build/esp32dev/config"
 				},
 				{
-					"backtrace" : 15,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning/include"
-				},
-				{
-					"backtrace" : 17,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning/src"
-				},
-				{
-					"backtrace" : 18,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning/proto-c"
-				},
-				{
-					"backtrace" : 19,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/protocomm/proto-c"
+					"backtrace" : 12,
+					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/esp_https_ota/include"
 				},
 				{
 					"backtrace" : 2,
@@ -387,61 +345,33 @@
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/protocomm/include/common"
+					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/esp_http_client/include"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/protocomm/include/security"
+					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/nghttp/port/include"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/protocomm/include/transports"
+					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/nghttp/nghttp2/lib/includes"
 				},
 				{
-					"backtrace" : 5,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/nvs_flash/include"
+					"backtrace" : 13,
+					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/bootloader_support/include"
 				},
 				{
-					"backtrace" : 5,
+					"backtrace" : 15,
+					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/app_update/include"
+				},
+				{
+					"backtrace" : 15,
 					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/spi_flash/include"
-				},
-				{
-					"backtrace" : 5,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/mbedtls/port/include"
-				},
-				{
-					"backtrace" : 5,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/mbedtls/mbedtls/include"
-				},
-				{
-					"backtrace" : 20,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/protobuf-c/protobuf-c"
-				},
-				{
-					"backtrace" : 7,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/mdns/include"
-				},
-				{
-					"backtrace" : 7,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/console"
-				},
-				{
-					"backtrace" : 8,
-					"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/json/cJSON"
 				}
 			],
 			"language" : "C",
 			"sourceIndexes" : 
 			[
-				0,
-				1,
-				2,
-				3,
-				4,
-				5,
-				6,
-				7,
-				8
+				0
 			]
 		}
 	],
@@ -453,40 +383,28 @@
 		},
 		{
 			"backtrace" : 5,
+			"id" : "__idf_esp-tls::@fec40229f530785b7d3e"
+		},
+		{
+			"backtrace" : 5,
 			"id" : "__idf_nghttp::@6ca59972b809fbe6ce53"
 		},
 		{
 			"backtrace" : 5,
-			"id" : "__idf_console::@4311ed8d271cc0ee1422"
+			"id" : "__idf_esp_http_client::@483ffd9ca1a06508c93f"
 		},
 		{
 			"backtrace" : 5,
-			"id" : "__idf_esp_http_server::@1e8eede8f41363800887"
-		},
-		{
-			"backtrace" : 5,
-			"id" : "__idf_protobuf-c::@b14513c4bd859268ec22"
-		},
-		{
-			"backtrace" : 5,
-			"id" : "__idf_protocomm::@d76d01c8dec06205e1fc"
-		},
-		{
-			"backtrace" : 7,
-			"id" : "__idf_mdns::@2f076c6da9dadb273cdc"
-		},
-		{
-			"backtrace" : 8,
-			"id" : "__idf_json::@c78a8bdc820334f01148"
+			"id" : "__idf_tcp_transport::@2217ed266b3ca9834900"
 		}
 	],
-	"id" : "__idf_wifi_provisioning::@9d7e7ffe1b15746c1098",
-	"name" : "__idf_wifi_provisioning",
-	"nameOnDisk" : "libwifi_provisioning.a",
+	"id" : "__idf_esp_https_ota::@55ee5ec07370a5473c2b",
+	"name" : "__idf_esp_https_ota",
+	"nameOnDisk" : "libesp_https_ota.a",
 	"paths" : 
 	{
-		"build" : "esp-idf/wifi_provisioning",
-		"source" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning"
+		"build" : "esp-idf/esp_https_ota",
+		"source" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/esp_https_ota"
 	},
 	"sourceGroups" : 
 	[
@@ -494,15 +412,7 @@
 			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				0,
-				1,
-				2,
-				3,
-				4,
-				5,
-				6,
-				7,
-				8
+				0
 			]
 		}
 	],
@@ -511,55 +421,7 @@
 		{
 			"backtrace" : 2,
 			"compileGroupIndex" : 0,
-			"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning/src/wifi_config.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 2,
-			"compileGroupIndex" : 0,
-			"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning/src/wifi_scan.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 2,
-			"compileGroupIndex" : 0,
-			"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning/src/manager.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 2,
-			"compileGroupIndex" : 0,
-			"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning/src/handlers.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 2,
-			"compileGroupIndex" : 0,
-			"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning/src/scheme_softap.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 2,
-			"compileGroupIndex" : 0,
-			"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning/src/scheme_console.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 2,
-			"compileGroupIndex" : 0,
-			"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning/proto-c/wifi_config.pb-c.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 2,
-			"compileGroupIndex" : 0,
-			"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning/proto-c/wifi_scan.pb-c.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 2,
-			"compileGroupIndex" : 0,
-			"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/wifi_provisioning/proto-c/wifi_constants.pb-c.c",
+			"path" : "C:/Users/nzube/.platformio/packages/framework-espidf/components/esp_https_ota/src/esp_https_ota.c",
 			"sourceGroupIndex" : 0
 		}
 	],

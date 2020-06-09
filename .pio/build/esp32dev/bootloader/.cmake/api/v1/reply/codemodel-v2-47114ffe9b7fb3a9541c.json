@@ -335,7 +335,7 @@
 				{
 					"directoryIndex" : 15,
 					"id" : "__idf_main::@7368607ed66887415643",
-					"jsonFile" : "target-__idf_main-a05d3ce399b43c00bc16.json",
+					"jsonFile" : "target-__idf_main-83da21635bf97bbafc9c.json",
 					"name" : "__idf_main",
 					"projectIndex" : 1
 				},
@@ -391,7 +391,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "bootloader.elf::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-bootloader.elf-0d98823b1ef8541abe38.json",
+					"jsonFile" : "target-bootloader.elf-b8a3a24a6264b168a9b5.json",
 					"name" : "bootloader.elf",
 					"projectIndex" : 0
 				},
