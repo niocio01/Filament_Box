@@ -10,7 +10,6 @@
 #include "blink.h"
 #include "temp.h"
 
-
 extern "C" void app_main()
 {
     esp_int_wdt_init(); // enable Interrupt watchdog
@@ -23,4 +22,6 @@ extern "C" void app_main()
 
     initBlink();
     initTemp();
+
+    
 }
