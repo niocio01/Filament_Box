@@ -7,8 +7,6 @@
 
 TaskHandle_t *blink_handle;
 
-#define BLINK_GPIO (gpio_num_t)CONFIG_BLINK_GPIO
-#define LED_BUILTIN 4
 
 bool state = false;
 

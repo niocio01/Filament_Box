@@ -7,7 +7,7 @@ void initServer(void);
 void server_Task(void *pvParameter);
 
 void handle_OnConnect(void);
-void handleSensorData(void);
+String handleSensorData(const String& var);
 String SendHTML(void);
 
 #endif // __WEBINTERFACE_H__

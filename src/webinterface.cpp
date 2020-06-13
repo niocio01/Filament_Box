@@ -1,7 +1,9 @@
 #include "webinterface.h"
+#include "blink.h"
 
 #include <WiFi.h>
-#include <WebServer.h>
+#include <ESPAsyncWebServer.h>
+#include "SPIFFS.h"
 
 #include "credentials.h"
 #include "temp.h"
@@ -15,59 +17,68 @@ IPAddress subnet(255,255,255,0);
 
 TaskHandle_t *Server_Task_handle;
 
-WebServer server(80);
+String ledState;
+
+AsyncWebServer server(80);
 
 void initServer(void)
 {
-    WiFi.begin(ssid, password);
-
-    //check wi-fi is connected to wi-fi network
-    while (WiFi.status() != WL_CONNECTED)
+    if (!SPIFFS.begin(true))
     {
-        delay(1000);
-        Serial.print(".");
+        Serial.println("An Error has occurred while mounting SPIFFS");
+        return;
     }
+
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(1000);
+        Serial.print("Connecting to WiFi..");
+    }
+
     Serial.println("");
     Serial.println("WiFi connected..!");
     Serial.print("Got IP: ");
     Serial.println(WiFi.localIP());
-    server.on("/", handle_OnConnect);
-    server.on("/sensors", handleSensorData);
+    // Route for root / web page
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+        request->send(SPIFFS, "/index.html", String(), false, handleSensorData);
+    });
+
+    // Route to load style.css file
+    server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request) {
+        request->send(SPIFFS, "/style.css", "text/css");
+    });
 
     server.begin();
     Serial.println("HTTP server started");
 
-    xTaskCreate(&server_Task, "Server_Task", 1024*50, NULL, 5, Server_Task_handle);
+    // xTaskCreate(&server_Task, "Server_Task", 1024 * 50, NULL, 5, Server_Task_handle);
 }
 
-void server_Task(void *pvParameter) 
-{
-    while(1)
-    {
-    server.handleClient();
-    vTaskDelay(200/portTICK_PERIOD_MS);
-    }
-}
 
-void handle_OnConnect(void)
-{
-  server.send(200, "text/html", SendHTML() ); 
-}
-
-void handleSensorData(void)
-{
+// Replaces placeholder with LED state value
+String handleSensorData(const String& var){
     char temp[10], hum[10];
     dtostrf(getTemperature(), 4, 2, temp);
     dtostrf(getHumitity(), 4, 2, hum);
-    String json = "{\"temp\": ";
-    json += temp;
-    json += ", \"pin39\": 0.322, \"pin5\": 1}";
-    server.send(200, "application/json", json); 
+  Serial.println(temp);
+
+  if(var == "STATE"){
+    if(digitalRead(LED_BUILTIN)){
+      ledState = "ON";
+    }
+    else{
+      ledState = "OFF";
+    }
+    Serial.print(ledState);
+    return ledState;
+  }
+  return String();
 }
+
 
 String SendHTML(void)
 {
-    
 
     String ptr = "<!DOCTYPE html> <html>\n";
     ptr +="<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\">\n";
