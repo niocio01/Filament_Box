@@ -9,4 +9,7 @@ void initTemp(void);
 void ReadTemp_Task(void *pvParameter);
 void TempProtectionTask(void *pvParameter);
 
+float getTemperature(void);
+float getHumitity(void);
+
 #endif // __TEMP_H__

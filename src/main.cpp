@@ -9,6 +9,7 @@
 
 #include "blink.h"
 #include "temp.h"
+#include "webinterface.h"
 
 extern "C" void app_main()
 {
@@ -23,5 +24,5 @@ extern "C" void app_main()
     initBlink();
     initTemp();
 
-    
+    initServer();    
 }

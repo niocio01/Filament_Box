@@ -9,9 +9,15 @@
 
 #include "temp.h"
 
+// #define PRINTDATA
+
 TaskHandle_t *ReadTemp_Task_handle;
 
 uint8_t readStatus = 0;
+
+float temperature = 0;
+float humitity = 0;
+
 AHT10 myAHT10(AHT10_ADDRESS_0X38);
 
 
@@ -24,7 +30,7 @@ void initTemp(void)
     }
      Serial.println(F("AHT10 OK"));
 
-    xTaskCreate(&ReadTemp_Task, "ReadTemp_Task", configMINIMAL_STACK_SIZE, NULL, 5, ReadTemp_Task_handle);
+    xTaskCreate(&ReadTemp_Task, "ReadTemp_Task", 1024, NULL, 5, ReadTemp_Task_handle);
 }
 
 void ReadTemp_Task(void *pvParameter) 
@@ -36,22 +42,38 @@ void ReadTemp_Task(void *pvParameter)
 
         if (readStatus != AHT10_ERROR)
         {
+            temperature = myAHT10.readTemperature(AHT10_USE_READ_DATA);
+            humitity = myAHT10.readHumidity(AHT10_USE_READ_DATA);
+
+            #ifdef PRINTDATA
             Serial.print(F("Temperature: "));
-            Serial.print(myAHT10.readTemperature(AHT10_USE_READ_DATA));
+            Serial.print(temperature);
             Serial.println(F(" +-0.3C"));
             Serial.print(F("Humidity...: "));
-            Serial.print(myAHT10.readHumidity(AHT10_USE_READ_DATA));
+            Serial.print(humitity);
             Serial.println(F(" +-2%"));
+            #endif // PRINTDATA
+            
         }
         else
         {
-            Serial.print(F("Failed to read - reset: "));
+            Serial.print(F("Failed to read AH10 - reset: "));
             Serial.println(myAHT10.softReset()); //reset 1-success, 0-failed
         }
 
         esp_task_wdt_reset(); // reset watchdog
         vTaskDelay(500/portTICK_PERIOD_MS);
     }
+}
+
+float getTemperature(void)
+{
+    return temperature;
+}
+
+float getHumitity(void)
+{
+    return humitity;
 }
 
 void TempProtectionTask(void *pvParameter) 
