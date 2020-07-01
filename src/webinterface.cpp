@@ -71,8 +71,6 @@ String handleSensorData(const String& var){
     char temp[10], hum[10];
     dtostrf(getTemperature(), 4, 2, temp);
     dtostrf(getHumitity(), 4, 2, hum);
-  Serial.println(temp);
-
   if(var == "TEMP"){
     return F(temp);
   }
