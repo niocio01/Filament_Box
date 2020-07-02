@@ -21,6 +21,7 @@ float humitity_AH_1 = 0;
 
 float T_Ptc = 0;
 
+
 AHT10 myAHT10(AHT10_ADDRESS_0X38);
 
 
@@ -50,25 +51,27 @@ void ReadTemp_Task(void *pvParameter)
 
         for (int i = 0 ; i < 200; i++)
         {
-            sum += adc1_get_raw(ADC1_CHANNEL_0);
+            sum += adc1_get_raw(ADC1_CHANNEL_0); // Pin 36
         }
         
         float Value_Ptc = (float)sum/(float)200;
         float U_Ptc = 3.9/4096*Value_Ptc;
-        float R_Ptc = 100000*U_Ptc/(3.3-U_Ptc);
-        T_Ptc = 4261/(log( (R_Ptc)/(100000*exp(-4261/298.15))))-273.15;
+        float R_Ptc = PTC_R1*U_Ptc/(3.3-U_Ptc);
+        T_Ptc = PTC_BETA/(log( (R_Ptc)/(PTC_R0*exp(-PTC_BETA/298.15))))-273.15;
         if (T_Ptc == -1)
         {
             Serial.println("error reading thermistor");
         }
-        else
-        {
-            Serial.print(Value_Ptc);
-            Serial.print(", ");
-            Serial.print(U_Ptc);
-            Serial.print(", ");
-            Serial.println(T_Ptc);
-        }
+         #ifdef PRINTDATA
+            else
+            {
+                Serial.print(Value_Ptc);
+                Serial.print(", ");
+                Serial.print(U_Ptc);
+                Serial.print(", ");
+                Serial.println(T_Ptc);
+            }
+        #endif // PRINTDATA
 
         
 
@@ -97,9 +100,21 @@ void ReadTemp_Task(void *pvParameter)
     }
 }
 
-float getTemperature(void)
+float getTemperature(TempSensors_t sensor)
 {
-    return temperature_AH_1;
+    switch (sensor) {
+        case THERMISTOR:
+            return T_Ptc;
+        
+        case AHT10_1:
+            return temperature_AH_1;
+
+        //case AHT10_2:
+        //return temperature_AH_2;
+
+        default:
+            return -1;
+    }
 }
 
 float getHumitity(void)

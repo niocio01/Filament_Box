@@ -9,6 +9,7 @@
 
 #include "blink.h"
 #include "temp.h"
+#include "heater.h"
 #include "webinterface.h"
 
 extern "C" void app_main()
@@ -22,7 +23,9 @@ extern "C" void app_main()
     Serial.println("Startup done!");
 
     initBlink();
+    initServer();
     initTemp();
+    initHeater();
 
-    initServer();    
+
 }
