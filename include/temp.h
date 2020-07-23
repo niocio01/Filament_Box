@@ -11,7 +11,8 @@ typedef enum
 {
     THERMISTOR,
     AHT10_1,
-    AHT10_2
+    AHT10_2,
+    ESP32_TEMP_SENS
 } TempSensors_t;
 
 void initTemp(void);

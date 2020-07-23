@@ -69,7 +69,7 @@ void initServer(void)
 // Replaces placeholder with LED state value
 String handleSensorData(const String& var){
     char temp[10], hum[10];
-    dtostrf(getTemperature(THERMISTOR), 4, 2, temp);
+    dtostrf(getTemperature(ESP32_TEMP_SENS), 4, 2, temp);
     dtostrf(getHumitity(), 4, 2, hum);
   if(var == "TEMP"){
     return F(temp);

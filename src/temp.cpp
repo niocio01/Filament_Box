@@ -12,6 +12,16 @@
 
 // #define PRINTDATA
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+uint8_t temprature_sens_read();
+#ifdef __cplusplus
+}
+#endif
+uint8_t temprature_sens_read();
+
 TaskHandle_t *ReadTemp_Task_handle;
 
 uint8_t readStatus = 0;
@@ -20,6 +30,8 @@ float temperature_AH_1 = 0;
 float humitity_AH_1 = 0;
 
 float T_Ptc = 0;
+
+float temperature_ESP32 = 0;
 
 
 AHT10 myAHT10(AHT10_ADDRESS_0X38);
@@ -62,6 +74,9 @@ void ReadTemp_Task(void *pvParameter)
         {
             Serial.println("error reading thermistor");
         }
+
+        temperature_ESP32 = temprature_sens_read() - 32 / 1.8;
+
          #ifdef PRINTDATA
             else
             {
@@ -108,6 +123,9 @@ float getTemperature(TempSensors_t sensor)
         
         case AHT10_1:
             return temperature_AH_1;
+
+        case ESP32_TEMP_SENS:
+            return temperature_ESP32;
 
         //case AHT10_2:
         //return temperature_AH_2;

@@ -34,7 +34,7 @@ void heaterPID_Task(void *pvParameter)
     esp_task_wdt_add(HeaterPID_Task_handle); //add task to watchdog checking list
     while(1){
 
-        float currentTemp = getTemperature(THERMISTOR);
+        float currentTemp = getTemperature(ESP32_TEMP_SENS);
         if (currentTemp > MAXTEMP) {
             Serial.print("ERROR Maxtemp!, shutting down...");
             stopHeater(); }

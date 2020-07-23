@@ -11,6 +11,7 @@
 #include "temp.h"
 #include "heater.h"
 #include "webinterface.h"
+#include "display.h"
 
 extern "C" void app_main()
 {
@@ -22,10 +23,12 @@ extern "C" void app_main()
     Serial.begin(115200);
     Serial.println("Startup done!");
 
-    initBlink();
-    initServer();
-    initTemp();
-    initHeater();
+    //initBlink();
+    //initServer();
+    //initTemp();
+    //initHeater();
+    display_init();
+
 
 
 }
