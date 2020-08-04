@@ -23,12 +23,10 @@ extern "C" void app_main()
     Serial.begin(115200);
     Serial.println("Startup done!");
 
-    //initBlink();
+    // initBlink();
     //initServer();
     //initTemp();
     //initHeater();
     display_init();
-
-
 
 }

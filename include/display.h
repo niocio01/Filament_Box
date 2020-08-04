@@ -1,30 +1,18 @@
 #ifndef __DISPLAY_H__
 #define __DISPLAY_H__
 
-#ifndef TFT_DISPOFF
-#define TFT_DISPOFF 0x28
-#endif
+#include <lvgl.h>
+#include <TFT_eSPI.h>
 
-#ifndef TFT_SLPIN
-#define TFT_SLPIN   0x10
-#endif
-
-#define TFT_MOSI            19
-#define TFT_SCLK            18
-#define TFT_CS              5
-#define TFT_DC              16
-#define TFT_RST             23
-
-#define TFT_BL              4   // Display backlight control pin
-#define ADC_EN              14  //ADC_EN is the ADC detection enable port
-#define ADC_PIN             34
-#define BUTTON_1            35
-#define BUTTON_2            0
-
-void setupSDCard(void);
-void showVoltage(void);
-void button_init(void);
-void button_loop(void);
+void guiTask(void *pvParameter);
 void display_init(void);
+
+void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p);
+bool read_encoder(lv_indev_drv_t * indev, lv_indev_data_t * data);
+
+#if LV_USE_LOG != 0
+/* Serial debugging */
+void my_print(lv_log_level_t level, const char * file, uint32_t line, const char * func, const char * dsc);
+#endif
 
 #endif // __DISPLAY_H__
