@@ -23,6 +23,9 @@ TFT_eSPI tft = TFT_eSPI(); /* TFT instance */
 static lv_disp_buf_t disp_buf;
 static lv_color_t buf[LV_HOR_RES_MAX * 10];
 
+lv_obj_t *test;
+lv_obj_t *test2;
+
 void guiTask(void *pvParameter)
 {
     while (1)
@@ -33,6 +36,16 @@ void guiTask(void *pvParameter)
 
     //A task should NEVER return
     vTaskDelete(NULL);
+}
+
+void toggle(void *pvParameter)
+{
+    while (1)
+    {
+        vTaskDelay(500/ portTICK_PERIOD_MS);
+        lv_switch_toggle(test, LV_ANIM_ON);
+        lv_switch_toggle(test2, LV_ANIM_ON);
+    }
 }
 
 void display_init(void)
@@ -51,8 +64,8 @@ void display_init(void)
     /*Initialize the display*/
     lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
-    disp_drv.hor_res = 240;
-    disp_drv.ver_res = 135;
+    disp_drv.hor_res = dispWidth;
+    disp_drv.ver_res = dispHeight;
     disp_drv.flush_cb = my_disp_flush;
     disp_drv.buffer = &disp_buf;
     lv_disp_drv_register(&disp_drv);
@@ -66,10 +79,33 @@ void display_init(void)
 
     /* Create simple label */
     lv_obj_t *label = lv_label_create(lv_scr_act(), NULL);
-    lv_label_set_text(label, "Hello Arduino! (V7.0.X)");
-    lv_obj_align(label, NULL, LV_ALIGN_CENTER, 0, 0);
+    lv_label_set_text(label, "Filament Box - No Programm Running");
+    lv_label_set_long_mode(label, LV_LABEL_LONG_SROLL);
+    lv_label_set_anim_speed(label, 15);
+    lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 5, 5);
+    lv_obj_set_width(label, dispWidth - 10);
+
+    // test = lv_switch_create(lv_scr_act(), NULL);
+    // lv_obj_align(test, label, LV_ALIGN_OUT_BOTTOM_LEFT, 5, 5);
+    // test2 = lv_switch_create(lv_scr_act(), NULL);
+    // lv_obj_align(test2, test, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
+    // lv_switch_on(test2, LV_ANIM_OFF);
+
+    
+    static const char* btnm_map[] = {"PLA", "PETG", "NEW", ""};
+    lv_obj_t *buttons = lv_btnmatrix_create(lv_scr_act(), NULL);
+    lv_btnmatrix_set_map(buttons, btnm_map);
+
+    lv_obj_set_size(buttons, dispWidth-10, 80);
+    // lv_btnmatrix_set_btn_ctrl_all(buttons, LV_BTNMATRIX_CTRL_DISABLED);
+    lv_obj_align(buttons, label, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
+    lv_btnmatrix_set_focused_btn(buttons, 0);
+
+    
+
 
     xTaskCreate(guiTask, "GuiTask", 1025 * 4, NULL, 1, NULL);
+    //xTaskCreate(toggle, "toggleTask", 1025 * 4, NULL, 1, NULL);
 }
 
 

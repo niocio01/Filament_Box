@@ -4,6 +4,9 @@
 #include <lvgl.h>
 #include <TFT_eSPI.h>
 
+#define dispWidth 240
+#define dispHeight 135
+
 void guiTask(void *pvParameter);
 void display_init(void);
 
