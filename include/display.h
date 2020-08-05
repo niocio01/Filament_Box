@@ -18,6 +18,8 @@ bool read_encoder(lv_indev_drv_t * indev, lv_indev_data_t * data);
 #if LV_USE_LOG != 0
 /* Serial debugging */
 void my_print(lv_log_level_t level, const char * file, uint32_t line, const char * func, const char * dsc);
+
+static void test_cb(lv_obj_t * obj, lv_event_t event);
 #endif
 
 #endif // __DISPLAY_H__

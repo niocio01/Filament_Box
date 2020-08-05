@@ -16,6 +16,7 @@
 #include <lvgl.h>
 #include <TFT_eSPI.h>
 
+#include "input.h"
 #include "display.h"
 
 
@@ -30,13 +31,10 @@ lv_obj_t *test2;
 void guiTask(void *pvParameter)
 {
     
-
     while (1)
     {
         uint32_t waitTime = lv_task_handler(); /* let the GUI do its work */
         vTaskDelay(waitTime / portTICK_PERIOD_MS);
-
-     
     }
 
     //A task should NEVER return
@@ -85,7 +83,8 @@ void display_init(void)
     lv_indev_drv_init(&indev_drv);
     indev_drv.type = LV_INDEV_TYPE_ENCODER;
     indev_drv.read_cb = read_encoder;
-    lv_indev_drv_register(&indev_drv);
+    lv_indev_t *encoder = lv_indev_drv_register(&indev_drv);
+    initEncoder();
 
     /* Create simple label */
     lv_obj_t *label = lv_label_create(lv_scr_act(), NULL);
@@ -97,6 +96,7 @@ void display_init(void)
 
     test = lv_switch_create(lv_scr_act(), NULL);
     lv_obj_align(test, label, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 5);
+    lv_obj_set_event_cb(test, test_cb);   /*Assign an event callback*/
     test2 = lv_switch_create(lv_scr_act(), NULL);
     lv_obj_align(test2, test, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
     lv_switch_on(test2, LV_ANIM_OFF);
@@ -112,8 +112,15 @@ void display_init(void)
     lv_btnmatrix_set_focused_btn(buttons, 0);
 
 
+    lv_group_t * group1 = lv_group_create();
+    lv_group_add_obj(group1, test);
+    lv_group_add_obj(group1, test2);
+    lv_group_add_obj(group1, buttons);
+    lv_indev_set_group(encoder, group1);
+
+
     xTaskCreate(guiTask, "GuiTask", 1025 * 4, NULL, 1, NULL);
-    xTaskCreate(toggle, "toggleTask", 1025 * 4, NULL, 1, NULL);
+    // xTaskCreate(toggle, "toggleTask", 1025 * 4, NULL, 1, NULL);
 }
 
 
@@ -151,14 +158,40 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
 /* Reading input device (simulated encoder here) */
 bool read_encoder(lv_indev_drv_t * indev, lv_indev_data_t * data)
 {
-    static int32_t last_diff = 0;
-    int32_t diff = 0; /* Dummy - no movement */
-    int btn_state = LV_INDEV_STATE_REL; /* Dummy - no press */
-
-    data->enc_diff = diff - last_diff;;
-    data->state = btn_state;
-
-    last_diff = diff;
+    data->enc_diff = readEncMovement();
+    data->state = readEncButton();
 
     return false;
+}
+
+
+
+
+static void test_cb(lv_obj_t * obj, lv_event_t event)
+{
+    switch(event) {
+        case LV_EVENT_PRESSED:
+            Serial.println("Pressed\n");
+            break;
+
+        case LV_EVENT_SHORT_CLICKED:
+            Serial.println("Short clicked\n");
+            break;
+
+        case LV_EVENT_CLICKED:
+            Serial.println("Clicked\n");
+            break;
+
+        case LV_EVENT_LONG_PRESSED:
+            Serial.println("Long press\n");
+            break;
+
+        case LV_EVENT_LONG_PRESSED_REPEAT:
+            Serial.println("Long press repeat\n");
+            break;
+
+        case LV_EVENT_RELEASED:
+            Serial.println("Released\n");
+            break;
+    }
 }
