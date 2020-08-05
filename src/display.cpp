@@ -27,10 +27,21 @@ static lv_color_t buf[LV_HOR_RES_MAX * 10];
 
 lv_obj_t *test;
 lv_obj_t *test2;
+lv_obj_t *buttons;
+
+lv_obj_t *tabs;
+
+
+lv_obj_t *tabPage1;
+lv_obj_t *tabPage2;
+lv_obj_t *tabPage3;
+
+lv_group_t *group1;
+lv_group_t *group2;
 
 void guiTask(void *pvParameter)
 {
-    
+
     while (1)
     {
         uint32_t waitTime = lv_task_handler(); /* let the GUI do its work */
@@ -56,9 +67,9 @@ void display_init(void)
 {
     lv_init();
 
-#if LV_USE_LOG != 0
+    #if LV_USE_LOG != 0
     lv_log_register_print_cb(my_print); /* register print function for debugging */
-#endif
+    #endif
 
     tft.begin(); /* TFT init */
     tft.setRotation(1); /* Landscape orientation */
@@ -86,38 +97,52 @@ void display_init(void)
     lv_indev_t *encoder = lv_indev_drv_register(&indev_drv);
     initEncoder();
 
-    /* Create simple label */
-    lv_obj_t *label = lv_label_create(lv_scr_act(), NULL);
-    lv_label_set_text(label, "No programm running  -  Select a preset or create a new one  -");
-    lv_label_set_long_mode(label, LV_LABEL_LONG_SROLL_CIRC);
-    lv_label_set_anim_speed(label, 20);
-    lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 5, 5);
-    lv_obj_set_width(label, dispWidth - 10);
 
-    test = lv_switch_create(lv_scr_act(), NULL);
-    lv_obj_align(test, label, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 5);
-    lv_obj_set_event_cb(test, test_cb);   /*Assign an event callback*/
-    test2 = lv_switch_create(lv_scr_act(), NULL);
-    lv_obj_align(test2, test, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
-    lv_switch_on(test2, LV_ANIM_OFF);
+    tabs = lv_tabview_create (lv_scr_act(), NULL);
+    tabPage1 = lv_tabview_add_tab(tabs, "Select");
+    tabPage2 = lv_tabview_add_tab(tabs, "Setup");
+    tabPage3 = lv_tabview_add_tab(tabs, "Run");
+
+    lv_obj_set_style_local_bg_color(tabs, LV_TABVIEW_PART_BG, LV_TABVIEW_PART_TAB_BG, LV_COLOR_GREEN );
 
     
-    static const char* btnm_map[] = {"PLA", "ABS", "PETG", "\n", "TPU-R", "PC", "+", ""};
-    lv_obj_t *buttons = lv_btnmatrix_create(lv_scr_act(), NULL);
+    //lv_obj_set_size(tabPage1, dispWidth, 80);
+    // lv_obj_set_style_local_margin_bottom(tabPage1, LV_STATE_DEFAULT, 0 );
+    lv_page_set_scrollbar_mode(tabPage1, LV_SCRLBAR_MODE_AUTO);
+
+    /* Create simple label */
+    lv_obj_t *label = lv_label_create(tabPage1, NULL);
+    lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 5, 5);
+    lv_label_set_text(label, "No programm running  -  Select a preset or create a new one  -");    
+    lv_label_set_long_mode(label, LV_LABEL_LONG_SROLL_CIRC);
+    lv_label_set_anim_speed(label, 20);    
+    lv_obj_set_width(label, dispWidth - 20);
+
+
+    static const char* btnm_map[] ={ "PLA", "ABS", "PETG", "\n", "TPU-R", "PC", "+", "" };
+    buttons = lv_btnmatrix_create(tabPage1, NULL);
     lv_btnmatrix_set_map(buttons, btnm_map);
+    lv_obj_align(buttons, label, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 5);
 
-    lv_obj_set_size(buttons, dispWidth-10, 70);
-    // lv_btnmatrix_set_btn_ctrl_all(buttons, LV_BTNMATRIX_CTRL_DISABLED);
-    lv_obj_align(buttons, test, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 5);
-    lv_btnmatrix_set_focused_btn(buttons, 0);
+    lv_obj_set_size(buttons, dispWidth-20, 100);
+    
+    group1 = lv_group_create();
 
-
-    lv_group_t * group1 = lv_group_create();
-    lv_group_add_obj(group1, test);
-    lv_group_add_obj(group1, test2);
+    //lv_group_add_obj(group1, tabPage1);
+    lv_group_add_obj(group1, tabPage1);
     lv_group_add_obj(group1, buttons);
     lv_indev_set_group(encoder, group1);
 
+    lv_group_set_focus_cb(group1, test_cb);
+    lv_obj_set_event_cb(buttons, current_cb);
+
+    //lv_page_focus(tabPage1, buttons, LV_ANIM_OFF);
+    lv_group_focus_obj(buttons);
+    lv_event_send(buttons, LV_EVENT_SHORT_CLICKED, NULL );
+    //lv_btnmatrix_set_focused_btn(buttons, 0);
+
+
+    
 
     xTaskCreate(guiTask, "GuiTask", 1025 * 4, NULL, 1, NULL);
     // xTaskCreate(toggle, "toggleTask", 1025 * 4, NULL, 1, NULL);
@@ -167,31 +192,44 @@ bool read_encoder(lv_indev_drv_t * indev, lv_indev_data_t * data)
 
 
 
-static void test_cb(lv_obj_t * obj, lv_event_t event)
+void test_cb(_lv_group_t * group)
 {
-    switch(event) {
-        case LV_EVENT_PRESSED:
-            Serial.println("Pressed\n");
-            break;
 
-        case LV_EVENT_SHORT_CLICKED:
-            Serial.println("Short clicked\n");
-            break;
+    lv_obj_t *currentFocus = lv_group_get_focused(group1);
 
-        case LV_EVENT_CLICKED:
-            Serial.println("Clicked\n");
-            break;
+    lv_obj_set_event_cb(currentFocus, current_cb);   /*Assign an event callback*/
+}
 
-        case LV_EVENT_LONG_PRESSED:
-            Serial.println("Long press\n");
-            break;
+void current_cb(lv_obj_t * obj, lv_event_t event)
+{
 
-        case LV_EVENT_LONG_PRESSED_REPEAT:
-            Serial.println("Long press repeat\n");
-            break;
+    switch (event) {
+    case LV_EVENT_PRESSED:
+        break;
 
-        case LV_EVENT_RELEASED:
-            Serial.println("Released\n");
-            break;
+    case LV_EVENT_SHORT_CLICKED:
+        break;
+
+    case LV_EVENT_CLICKED:
+        {
+            Serial.print(lv_btnmatrix_get_active_btn_text(buttons));
+            Serial.println(" Clicked\n");
+
+            lv_tabview_set_tab_act(tabs, 1, LV_ANIM_ON);
+
+            //lv_obj_set_hidden(tabPage1, true);
+            //lv_group_remove_obj(buttons);
+        }
+        break;
+
+    case LV_EVENT_LONG_PRESSED:
+        break;
+
+    case LV_EVENT_LONG_PRESSED_REPEAT:
+        break;
+
+    case LV_EVENT_RELEASED:
+        break;
     }
 }
+
