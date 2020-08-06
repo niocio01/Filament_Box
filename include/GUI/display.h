@@ -4,9 +4,9 @@
 #include <lvgl.h>
 #include <TFT_eSPI.h>
 
+#define DEFAULT_SCREEN_BRIGHTNESS 100
 #define dispWidth 240
 #define dispHeight 135
-#define DEFAULT_SCREEN_BRIGHTNESS 100
 
 void guiTask(void *pvParameter);
 void display_init(void);
