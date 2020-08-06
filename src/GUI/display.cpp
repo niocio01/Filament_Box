@@ -25,19 +25,21 @@ TFT_eSPI tft = TFT_eSPI(); /* TFT instance */
 static lv_disp_buf_t disp_buf;
 static lv_color_t buf[LV_HOR_RES_MAX * 10];
 
-lv_obj_t *test;
-lv_obj_t *test2;
-lv_obj_t *buttons;
-
 lv_obj_t *tabs;
-
 
 lv_obj_t *tabPage1;
 lv_obj_t *tabPage2;
 lv_obj_t *tabPage3;
 
+uint8_t currentTab;
+
+lv_obj_t *label;
+lv_obj_t *buttons;
+
 lv_group_t *group1;
 lv_group_t *group2;
+
+bool enterbutton = false;
 
 void guiTask(void *pvParameter)
 {
@@ -55,11 +57,29 @@ void guiTask(void *pvParameter)
 void toggle(void *pvParameter)
 {
 
+    char str[100] ={ 0 };
+
+    for (int topSP = -10; topSP <= 20; topSP++)
+    {
+
+        for (int bottomSP = -5; bottomSP <= 15; bottomSP++)
+        {
+            sprintf(str, "Top: %d | Bottom: %d", topSP, bottomSP);
+
+            lv_obj_set_style_local_pad_top(tabs, LV_TABVIEW_PART_TAB_BTN, LV_STATE_DEFAULT, topSP);
+            lv_obj_set_style_local_pad_bottom(tabs, LV_TABVIEW_PART_TAB_BTN, LV_STATE_DEFAULT, bottomSP);
+
+            lv_label_set_text(label, str);
+            vTaskDelay(200/ portTICK_PERIOD_MS);
+        }
+
+    }
+
+
+
     while (1)
     {
-        vTaskDelay(500/ portTICK_PERIOD_MS);
-        lv_switch_toggle(test, LV_ANIM_ON);
-        lv_switch_toggle(test2, LV_ANIM_ON);
+
     }
 }
 
@@ -98,51 +118,57 @@ void display_init(void)
     initEncoder();
 
 
-    tabs = lv_tabview_create (lv_scr_act(), NULL);
+    tabs = lv_tabview_create(lv_scr_act(), NULL);
     tabPage1 = lv_tabview_add_tab(tabs, "Select");
     tabPage2 = lv_tabview_add_tab(tabs, "Setup");
     tabPage3 = lv_tabview_add_tab(tabs, "Run");
 
-    lv_obj_set_style_local_bg_color(tabs, LV_TABVIEW_PART_BG, LV_TABVIEW_PART_TAB_BG, LV_COLOR_GREEN );
+    lv_obj_set_style_local_pad_top(tabs, LV_TABVIEW_PART_TAB_BTN, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_bottom(tabs, LV_TABVIEW_PART_TAB_BTN, LV_STATE_DEFAULT, 0);
 
-    
-    //lv_obj_set_size(tabPage1, dispWidth, 80);
+    lv_obj_set_style_local_pad_top(tabs, LV_TABVIEW_PART_TAB_BG, LV_STATE_DEFAULT, 3);
+    lv_obj_set_style_local_pad_bottom(tabs, LV_TABVIEW_PART_TAB_BG, LV_STATE_DEFAULT, 8);
+
+    //lv_obj_set_size(tabPage1, dispWidth, lv_page_get_height_fit(tabPage1));
     // lv_obj_set_style_local_margin_bottom(tabPage1, LV_STATE_DEFAULT, 0 );
-    lv_page_set_scrollbar_mode(tabPage1, LV_SCRLBAR_MODE_AUTO);
-
-    /* Create simple label */
-    lv_obj_t *label = lv_label_create(tabPage1, NULL);
-    lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 5, 5);
-    lv_label_set_text(label, "No programm running  -  Select a preset or create a new one  -");    
-    lv_label_set_long_mode(label, LV_LABEL_LONG_SROLL_CIRC);
-    lv_label_set_anim_speed(label, 20);    
-    lv_obj_set_width(label, dispWidth - 20);
+    lv_page_set_scrollbar_mode(tabPage1, LV_SCRLBAR_MODE_OFF);
 
 
     static const char* btnm_map[] ={ "PLA", "ABS", "PETG", "\n", "TPU-R", "PC", "+", "" };
     buttons = lv_btnmatrix_create(tabPage1, NULL);
     lv_btnmatrix_set_map(buttons, btnm_map);
-    lv_obj_align(buttons, label, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 5);
+    lv_obj_align(buttons, NULL, LV_ALIGN_IN_TOP_LEFT, 5, 5);
+    lv_obj_set_size(buttons, dispWidth-10, 75);
 
-    lv_obj_set_size(buttons, dispWidth-20, 100);
-    
+
+    label = lv_label_create(tabPage1, NULL);
+    lv_obj_align(label, buttons, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 5);
+    lv_label_set_text(label, "No programm running  -  Select a preset or create a new one  -");
+    lv_label_set_long_mode(label, LV_LABEL_LONG_SROLL_CIRC);
+    lv_label_set_anim_speed(label, 20);
+    lv_obj_set_width(label, dispWidth - 10);
+
     group1 = lv_group_create();
 
-    //lv_group_add_obj(group1, tabPage1);
-    lv_group_add_obj(group1, tabPage1);
+    lv_group_add_obj(group1, tabs);
     lv_group_add_obj(group1, buttons);
     lv_indev_set_group(encoder, group1);
 
-    lv_group_set_focus_cb(group1, test_cb);
-    lv_obj_set_event_cb(buttons, current_cb);
+    //lv_group_set_focus_cb(group1, test_cb);
+    //lv_obj_set_event_cb(buttons, current_cb);
 
-    //lv_page_focus(tabPage1, buttons, LV_ANIM_OFF);
     lv_group_focus_obj(buttons);
-    lv_event_send(buttons, LV_EVENT_SHORT_CLICKED, NULL );
-    //lv_btnmatrix_set_focused_btn(buttons, 0);
+    lv_group_set_editing(group1, true);
+    //lv_event_send(tabPage1, LV_EVENT_CLICKED, NULL );
+   // lv_btnmatrix_set_focused_btn(buttons, 3);
+
+    lv_obj_set_event_cb(tabs, tabs_cb);
+    lv_obj_set_event_cb(buttons, buttons_cb);
+    lv_obj_set_event_cb(tabPage1, tabPage1_cb);
 
 
-    
+
+
 
     xTaskCreate(guiTask, "GuiTask", 1025 * 4, NULL, 1, NULL);
     // xTaskCreate(toggle, "toggleTask", 1025 * 4, NULL, 1, NULL);
@@ -189,7 +215,63 @@ bool read_encoder(lv_indev_drv_t * indev, lv_indev_data_t * data)
     return false;
 }
 
+void tabs_cb(lv_obj_t * obj, lv_event_t event)
+{
+    Serial.print("tabs: ");
+    Serial.println(event);
 
+    switch (event)
+    {
+
+    case LV_EVENT_SHORT_CLICKED:
+        if (lv_tabview_get_tab_act(tabs) == 0)
+        {
+            enterbutton = true;
+            lv_group_focus_obj(buttons);
+            lv_group_set_editing(group1, true);
+        }
+
+        break;
+    }
+}
+
+void tabPage1_cb(lv_obj_t * obj, lv_event_t event)
+{
+    Serial.print("buttons: ");
+    Serial.println(event);
+}
+
+void buttons_cb(lv_obj_t * obj, lv_event_t event)
+{
+
+    Serial.print("buttons: ");
+    Serial.println(event);
+
+    switch (event) {
+
+    case LV_EVENT_SHORT_CLICKED:
+        Serial.print(lv_btnmatrix_get_active_btn_text(buttons));
+        Serial.println(" Clicked\n");
+
+        lv_tabview_set_tab_act(tabs, 1, LV_ANIM_ON);
+        break;
+
+    case LV_EVENT_FOCUSED:
+        if (lv_group_get_editing(group1) == false)
+        {   
+            if (enterbutton)
+            {
+                enterbutton = false;
+            }
+            else
+            {
+                lv_group_focus_obj(tabs);
+                lv_group_set_editing(group1, true);
+            }
+        }
+        break;
+    }
+}
 
 
 void test_cb(_lv_group_t * group)
@@ -197,39 +279,34 @@ void test_cb(_lv_group_t * group)
 
     lv_obj_t *currentFocus = lv_group_get_focused(group1);
 
-    lv_obj_set_event_cb(currentFocus, current_cb);   /*Assign an event callback*/
+    //lv_obj_set_event_cb(currentFocus, current_cb);   /*Assign an event callback*/
 }
 
 void current_cb(lv_obj_t * obj, lv_event_t event)
 {
+    Serial.println(event);
 
-    switch (event) {
-    case LV_EVENT_PRESSED:
-        break;
+    if (lv_group_get_focused(group1) == buttons)
+    {
+        switch (event) {
 
-    case LV_EVENT_SHORT_CLICKED:
-        break;
-
-    case LV_EVENT_CLICKED:
-        {
+        case LV_EVENT_CLICKED:
             Serial.print(lv_btnmatrix_get_active_btn_text(buttons));
             Serial.println(" Clicked\n");
 
             lv_tabview_set_tab_act(tabs, 1, LV_ANIM_ON);
+            break;
 
-            //lv_obj_set_hidden(tabPage1, true);
-            //lv_group_remove_obj(buttons);
+        case LV_EVENT_VALUE_CHANGED:
+            lv_group_focus_freeze(group1, false);
+            lv_group_focus_obj(tabs);
+            //lv_group_focus_freeze(group1, true);
+
+            lv_group_set_editing(group1, true);
+            break;
         }
-        break;
-
-    case LV_EVENT_LONG_PRESSED:
-        break;
-
-    case LV_EVENT_LONG_PRESSED_REPEAT:
-        break;
-
-    case LV_EVENT_RELEASED:
-        break;
     }
+
+
 }
 

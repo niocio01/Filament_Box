@@ -2,7 +2,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
-#include "input.h"
+#include "GUI/input.h"
 
 int8_t direction = 0;
 static uint8_t prevNextCode = 0;

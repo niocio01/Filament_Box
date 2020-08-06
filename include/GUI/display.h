@@ -21,6 +21,10 @@ void my_print(lv_log_level_t level, const char * file, uint32_t line, const char
 
 #endif
 
+void tabs_cb(lv_obj_t * obj, lv_event_t event);
+void tabPage1_cb(lv_obj_t * obj, lv_event_t event);
+void buttons_cb(lv_obj_t * obj, lv_event_t event);
+
 void test_cb(_lv_group_t * group);
 void current_cb(lv_obj_t * obj, lv_event_t event);
 

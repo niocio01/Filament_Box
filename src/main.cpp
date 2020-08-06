@@ -11,7 +11,7 @@
 #include "temp.h"
 #include "heater.h"
 #include "webinterface.h"
-#include "display.h"
+#include "GUI/display.h"
 
 extern "C" void app_main()
 {
