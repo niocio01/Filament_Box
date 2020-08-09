@@ -2,7 +2,10 @@
 #include "profiles.h"
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5bcbfe1ab0c3a9430a8b83da6b3ee5716aae6f8
 void profiles_init(void)
 {
     addProfile(createProfile(DESSICANT, "Dessicant", 65, 0, 3));

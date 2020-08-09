@@ -7,6 +7,9 @@ lv_obj_t* page_setup_init(lv_obj_t *tabs);
 
 void setTab_setup(lv_group_t *group);
 
+void btn_back_cb(lv_obj_t * obj, lv_event_t event);
+void btn_run_cb(lv_obj_t * obj, lv_event_t event);
+
 void slider_temp_cb(lv_obj_t * obj, lv_event_t event);
 void slider_hum_cb(lv_obj_t * obj, lv_event_t event);
 void slider_time_cb(lv_obj_t * obj, lv_event_t event);
