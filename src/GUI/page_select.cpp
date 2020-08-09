@@ -16,12 +16,18 @@ lv_obj_t* page_select_init(lv_obj_t * tabs)
     lv_page_set_scrollbar_mode(page, LV_SCROLLBAR_MODE_OFF);
 
     
-    static const uint8_t btnm_id_map[10] = {PLA, PETG, ABS, 0, TPU, PC, PVA, 0, DESSICANT, KEEP_DRY};
-    static const char* btnm_map[11] = {"A", "B", "C", "\n", "D", "E", "F", "\n", "G", "H", ""};
+    static const uint8_t btnm_id_map[] = {PLA, PETG, ABS, 0, TPU, PC, PVA, 0, DESSICANT, KEEP_DRY};
+    static const char* linebreak = {"\n"};
+    static const char* end = {""};
+    static const char* btnm_map[(sizeof(btnm_id_map)/sizeof(btnm_id_map[0]))+1];
 
-    for (int i = 0; i < (8 + 2); i++)
+    for (int i = 0; i < (sizeof(btnm_id_map)/sizeof(btnm_id_map[0])); i++)
     {
-        if (btnm_id_map[i] != 0)
+        if (btnm_id_map[i] == 0)
+        {
+            btnm_map[i] = linebreak;
+        }
+        else
         {
             Serial.print("button: ");
             Serial.print(i);
@@ -30,6 +36,7 @@ lv_obj_t* page_select_init(lv_obj_t * tabs)
             btnm_map[i] = get_profile(btnm_id_map[i])->name;
         }
     }
+    btnm_map[sizeof(btnm_id_map)/sizeof(btnm_id_map[0])] = end;
 
     btn_mtrx = lv_btnmatrix_create(page, NULL);
     lv_btnmatrix_set_map(btn_mtrx, btnm_map);
