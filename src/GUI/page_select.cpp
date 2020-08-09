@@ -16,8 +16,21 @@ lv_obj_t* page_select_init(lv_obj_t * tabs)
     lv_page_set_scrollbar_mode(page, LV_SCROLLBAR_MODE_OFF);
 
     
+    static const uint8_t btnm_id_map[10] = {PLA, PETG, ABS, 0, TPU, PC, PVA, 0, DESSICANT, KEEP_DRY};
+    static const char* btnm_map[11] = {"A", "B", "C", "\n", "D", "E", "F", "\n", "G", "H", ""};
 
-    static const char* btnm_map[] ={ "PLA", "PETG", "ABS", "\n", "TPU-R", "PC", "PVA", "\n", "dessicant", "keep dry", "" };
+    for (int i = 0; i < (8 + 2); i++)
+    {
+        if (btnm_id_map[i] != 0)
+        {
+            Serial.print("button: ");
+            Serial.print(i);
+            Serial.print(" : ");
+            Serial.println(get_profile(btnm_id_map[i])->name);
+            btnm_map[i] = get_profile(btnm_id_map[i])->name;
+        }
+    }
+
     btn_mtrx = lv_btnmatrix_create(page, NULL);
     lv_btnmatrix_set_map(btn_mtrx, btnm_map);
     lv_obj_align(btn_mtrx, NULL, LV_ALIGN_IN_TOP_LEFT, 5, 4);
@@ -43,8 +56,6 @@ lv_obj_t* page_select_init(lv_obj_t * tabs)
     lv_obj_set_style_local_bg_opa(btn_mtrx, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, 0);
 
     lv_obj_set_event_cb(btn_mtrx, buttons_cb);
-
-    profiles_init();
 
     return page;
 }

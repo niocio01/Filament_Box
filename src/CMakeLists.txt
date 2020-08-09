@@ -1,1 +1,1 @@
-idf_component_register(SRCS "main.cpp" "blink.cpp" "temp.cpp" "webinterface.cpp" "heater.cpp" "GUI/input.cpp" "GUI/display.cpp" "GUI/nav.cpp" "GUI/page_select.cpp" "GUI/page_setup.cpp" "GUI/page_run.cpp")
+idf_component_register(SRCS "main.cpp" "blink.cpp" "temp.cpp" "webinterface.cpp" "heater.cpp" "GUI/input.cpp" "GUI/display.cpp" "GUI/nav.cpp" "GUI/page_select.cpp" "GUI/page_setup.cpp" "GUI/page_run.cpp" "GUI/profiles.cpp" )

@@ -2,10 +2,9 @@
 #include "profiles.h"
 
 
-<<<<<<< HEAD
+struct profile_t * profiles[20] ;
+uint8_t noOfProfiles = 0;
 
-=======
->>>>>>> b5bcbfe1ab0c3a9430a8b83da6b3ee5716aae6f8
 void profiles_init(void)
 {
     addProfile(createProfile(DESSICANT, "Dessicant", 65, 0, 3));
@@ -18,37 +17,46 @@ void profiles_init(void)
     addProfile(createProfile(ASA, "ASA", 60, 0, 4));
     addProfile(createProfile(PP, "PP", 55, 0, 6));
     addProfile(createProfile(PC, "PC", 70, 0, 10));
+    addProfile(createProfile(KEEP_DRY, "Keep Dry", 0, 0, 0));
 
-    for (int i = 0; i < 10; i++)
-    {
-        char str[10];
-        Serial.print(i);
-        Serial.print(": ");
-        Serial.print(profiles[i]->name);
-        Serial.print(" @ ");
-        Serial.print(profiles[i]->temperature);
-    }
+   for (int i = 0; i < noOfProfiles; i++)
+   {
+       Serial.print(i);
+       Serial.print(": ");
+       Serial.print(profiles[i]->name);
+       Serial.print("(");
+       Serial.print(profiles[i]->id);
+       Serial.print(") @ ");
+       Serial.println(profiles[i]->temperature);
+   }
 }
 
 
-int addProfile(profile_t * profile)
+void addProfile(profile_t * profile)
 {
-    static uint8_t noOfProfiles = 0;
-
     if (noOfProfiles == 0)
     {
-        
+        profiles[0] = profile;
     }
     else
     {
-        int i = 0;
-        while (profiles[i]->temperature < profiles[i+1]->temperature)
+        int insertPoint = 0;
+        for (int i = 0; i < noOfProfiles; i++)
         {
-            i++;
+            if(profiles[i]->temperature < profile->temperature)
+            {
+                insertPoint++;
+            }
         }
-        profiles[i] = profile;
+        for (int j = noOfProfiles+1; j > insertPoint; j--)
+        {
+            profiles[j] = profiles[j-1];
+        }
+        profiles[insertPoint] = profile;
+        
     }
 
+    noOfProfiles++;
 }
 
 profile_t *createProfile (uint8_t id, char name[10], uint8_t temperature, uint8_t humidity, uint8_t time_hours)
@@ -56,11 +64,28 @@ profile_t *createProfile (uint8_t id, char name[10], uint8_t temperature, uint8_
     profile_t *p = (profile_t*)malloc(sizeof(profile_t));
 
     strcpy(p->name, name);
+    p->id = id;
     p->temperature = temperature;
     p->humidity = humidity;
     p->time.minutes = 0;
     p->time.hours = time_hours;
     p->time.days = 0;
 
+  //  Serial.print(p->name);
+  //  Serial.println(" added");
+
     return p;
+}
+
+profile_t * get_profile(uint8_t id)
+{
+    for (int i = 0; i < noOfProfiles; i++)
+    {
+        if (profiles[i]->id == id)
+        {
+            return profiles[i];
+        }
+    }
+    // should never get here
+    return 0;
 }

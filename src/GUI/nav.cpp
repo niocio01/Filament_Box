@@ -7,6 +7,7 @@
 #include "GUI/page_select.h"
 #include "GUI/page_setup.h"
 #include "GUI/page_run.h"
+#include "GUI/profiles.h"
 
 #include "GUI/input.h"
 #include "GUI/nav.h"
@@ -30,6 +31,8 @@ void nav_init(void)
     lv_indev_t *encoder = lv_indev_drv_register(&indev_drv);
     initEncoder();
 
+    /* ---------------------------------------- profiles ---------------------------------------------*/
+    profiles_init();
 
     /* ---------------------------------------- tabs ---------------------------------------------*/
     tabs = lv_tabview_create(lv_scr_act(), NULL);
