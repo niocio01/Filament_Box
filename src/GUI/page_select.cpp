@@ -3,6 +3,7 @@
 #include "GUI/display.h"
 #include "GUI/nav.h"
 #include "GUI/page_select.h"
+#include "GUI/profiles.h"
 
 lv_obj_t *page;
 lv_obj_t *btn_mtrx;
@@ -49,6 +50,8 @@ lv_obj_t* page_select_init(lv_obj_t * tabs)
     lv_obj_add_style(btn_mtrx, LV_BTNMATRIX_PART_BTN, &style_btn);
 
     lv_obj_set_event_cb(btn_mtrx, buttons_cb);
+
+    profiles_init();
 
     return page;
 }

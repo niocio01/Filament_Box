@@ -3,6 +3,8 @@
 
 #include "Arduino.h"
 
+extern struct profile_t * profiles[20];
+
 typedef enum
 {
     DESSICANT,
@@ -26,14 +28,17 @@ typedef struct dry_time_t
 
 typedef struct profile_t
 {
+    uint8_t id;
     char name[10];
     uint8_t temperature;
     uint8_t humidity;
     dry_time_t time;
 } profile_t;
 
-void createProfile (uint8_t index, char name[10], uint8_t temperature, uint8_t humidity, uint8_t time_hours);
-void createProfile (uint8_t index, char name[10], uint8_t temperature, uint8_t humidity, uint8_t time_days, uint8_t time_hours, uint8_t time_minutes);
+void profiles_init(void);
+
+profile_t *createProfile (uint8_t id, char name[10], uint8_t temperature, uint8_t humidity, uint8_t time_hours);
+// void createProfile(uint8_t index, char name[10], uint8_t temperature, uint8_t humidity, uint8_t time_days, uint8_t time_hours, uint8_t time_minutes);
 
 
 #endif // __PROFILES_H__
