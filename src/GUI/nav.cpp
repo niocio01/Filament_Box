@@ -110,19 +110,22 @@ void tabs_event_cb(lv_obj_t * obj, lv_event_t event)
 
 void set_tab(tabs_t tab)
 {
+    Serial.println(tab);
     lv_tabview_set_tab_act(tabs, tab, LV_ANIM_ON);
     switch (tab)
         {
         case TAB_SELECT:
+            Serial.println("selsect");
             setTab_select(group);
             break;
 
         case TAB_SETUP:
+        Serial.println("setup");
             setTab_setup(group);
             break;
 
         case TAB_RUN:
-            /* code */
+            Serial.println("run");
             break;
 
         default:

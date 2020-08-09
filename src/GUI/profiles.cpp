@@ -3,7 +3,7 @@
 
 profile_t profiles[20] = {0};
 
-void init(void)
+void profiles_init(void)
 {
     createProfile(DESSICANT, "Dessicant", 65, 0, 3);
     createProfile(PLA, "PLA", 45, 0, 4);

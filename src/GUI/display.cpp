@@ -16,7 +16,6 @@
 #include "GUI/nav.h"
 #include "GUI/display.h"
 
-
 TFT_eSPI tft = TFT_eSPI(); /* TFT instance */
 static lv_disp_buf_t disp_buf;
 static lv_color_t buf[LV_HOR_RES_MAX * 10];
