@@ -5,6 +5,7 @@
 #include "GUI/nav.h"
 #include "GUI/page_setup.h"
 #include "GUI/page_select.h"
+#include "GUI/profiles.h"
 // #include "GUI/icons/temperature.c"
 
 LV_IMG_DECLARE(temperature);
@@ -28,6 +29,8 @@ lv_obj_t * label_time;
 
 lv_obj_t * switch_keepDryAfter;
 lv_obj_t * label_keepDryAfter;
+
+profile_t * currentProfile;
 
 lv_obj_t* page_setup_init(lv_obj_t * tabs)
 {
@@ -66,7 +69,8 @@ lv_obj_t* page_setup_init(lv_obj_t * tabs)
     lv_obj_add_style(btn_back, LV_BTN_PART_MAIN, &style_btn);
 
     label_back = lv_label_create(btn_back, NULL);
-    lv_label_set_text(label_back, "Select: PLA");
+    lv_label_set_text(label_back, "Select:    ");
+    // lv_label_set_long_mode(label_back, LV_LABEL_LONG_SROLL_CIRC);
 
     btn_run = lv_btn_create(page, NULL);
     lv_obj_align(btn_run, page, LV_ALIGN_IN_TOP_LEFT, dispWidth-(16+10+50)+18, 5);
@@ -139,6 +143,42 @@ void setTab_setup(lv_group_t * group)
     lv_group_focus_obj(btn_run);
     lv_group_set_editing(group, false);
     lv_group_set_wrap(group, false);
+
+    currentProfile = get_profile(get_selected_profile_id());
+
+    char str1[40];
+    char str2[40];
+    strcpy(str1, "Selected: ");
+    strcpy(str2, currentProfile->name);
+    strcat(str1, str2);
+
+    lv_label_set_text(label_back, str1);
+    lv_slider_set_value(slider_temperature, (currentProfile->temperature-15)/5, LV_ANIM_ON);
+    lv_slider_set_value(slider_humidity, currentProfile->humidity, LV_ANIM_ON);
+
+    uint8_t minutes = currentProfile->time.minutes;
+    uint8_t hours = currentProfile->time.hours;
+    uint8_t days = currentProfile->time.days;
+    uint8_t time = 0;
+
+    if (days >= 1)
+    {
+        time = (4*4+20*2) + hours + 24*days;
+    }
+    else if (hours >= 4)
+    {
+        time = (4*4) + 2 * minutes + hours;
+    }
+    else
+    {
+        time = (minutes / 15) + hours*4;
+    }
+    
+    lv_slider_set_value(slider_time, time, LV_ANIM_ON);
+
+    lv_event_send(slider_temperature, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_event_send(slider_humidity, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_event_send(slider_time, LV_EVENT_VALUE_CHANGED, NULL);
 }
 
 void btn_back_cb(lv_obj_t * obj, lv_event_t event)

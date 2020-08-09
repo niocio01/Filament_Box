@@ -1,7 +1,6 @@
 #include <string.h>
 #include "profiles.h"
 
-
 struct profile_t * profiles[20] ;
 uint8_t noOfProfiles = 0;
 
@@ -64,6 +63,7 @@ profile_t *createProfile (uint8_t id, char name[10], uint8_t temperature, uint8_
     profile_t *p = (profile_t*)malloc(sizeof(profile_t));
 
     strcpy(p->name, name);
+    
     p->id = id;
     p->temperature = temperature;
     p->humidity = humidity;

@@ -113,6 +113,7 @@ void tabs_event_cb(lv_obj_t * obj, lv_event_t event)
 
 void set_tab(tabs_t tab)
 {
+    Serial.println("Tab switch to Tab No: ");
     Serial.println(tab);
     lv_tabview_set_tab_act(tabs, tab, LV_ANIM_ON);
     switch (tab)
