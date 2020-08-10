@@ -31,6 +31,7 @@ lv_obj_t * switch_keepDryAfter;
 lv_obj_t * label_keepDryAfter;
 
 profile_t * currentProfile;
+int last_time_slider_Value = 0;
 
 lv_obj_t* page_setup_init(lv_obj_t * tabs)
 {
@@ -119,7 +120,7 @@ lv_obj_t* page_setup_init(lv_obj_t * tabs)
     lv_slider_set_type(slider_time, LV_SLIDER_TYPE_NORMAL);
     lv_obj_set_width(slider_time, 80);
     lv_obj_set_height(slider_time, 10);
-    lv_slider_set_range(slider_time, 0, MAX_TIME);
+    lv_slider_set_range(slider_time, 0, MAX_TIME+2);
     lv_obj_add_style(slider_time, LV_SLIDER_PART_KNOB, &style_slider_knob);
     lv_obj_add_style(slider_time, LV_SLIDER_PART_BG, &style_slider);
 
@@ -156,24 +157,12 @@ void setTab_setup(lv_group_t * group)
     lv_slider_set_value(slider_temperature, (currentProfile->temperature-15)/5, LV_ANIM_ON);
     lv_slider_set_value(slider_humidity, currentProfile->humidity, LV_ANIM_ON);
 
-    uint8_t minutes = currentProfile->time.minutes;
-    uint8_t hours = currentProfile->time.hours;
-    uint8_t days = currentProfile->time.days;
-    uint8_t time = 0;
+    int8_t minutes = (currentProfile->time.minutes/15)*15;
+    int8_t hours = currentProfile->time.hours;
+    int8_t days = currentProfile->time.days;
 
-    if (days >= 1)
-    {
-        time = (4*4+20*2) + hours + 24*days;
-    }
-    else if (hours >= 4)
-    {
-        time = (4*4) + 2 * minutes + hours;
-    }
-    else
-    {
-        time = (minutes / 15) + hours*4;
-    }
-    
+    int16_t time = minutes + hours*60 + days*24*60;
+    last_time_slider_Value = time;
     lv_slider_set_value(slider_time, time, LV_ANIM_ON);
 
     lv_event_send(slider_temperature, LV_EVENT_VALUE_CHANGED, NULL);
@@ -273,33 +262,66 @@ void slider_time_cb(lv_obj_t * obj, lv_event_t event)
     {
     case LV_EVENT_VALUE_CHANGED:
     {
-        uint8_t minutes = 0, hours = 0, days = 0;
-        uint8_t value = lv_slider_get_value(slider_time);
+        
+        int16_t value = lv_slider_get_value(slider_time);
         char str[20] = {0} ;
-        if (value == 0 || value == MAX_TIME)
+
+        // set weather to increase or decrease the time
+        int8_t direction = 0; // if value == last_time_slider_Value direction is 0 (stay)
+        direction = value - last_time_slider_Value;
+
+        if (last_time_slider_Value > MAX_TIME && direction > 0)
         {
-            sprintf(str, "Time: unlimited");
+            value = 15;
+        }
+        else if (last_time_slider_Value > MAX_TIME && direction < 0)
+        {
+            value = MAX_TIME;
+        }
+        else if (last_time_slider_Value == MAX_TIME && direction > 0)
+        {
+            value = MAX_TIME+1;
+        }
+        else if ( (last_time_slider_Value <= 15 && direction < 0) || value < 15)
+        {
+            value = MAX_TIME+1;
+        }
+
+        else if ( (last_time_slider_Value >= 1*24*60 && direction > 0) || (last_time_slider_Value > 1*24*60 && direction < 0) ) // after 1d
+        {
+            value = last_time_slider_Value+(direction*60);
+        }
+        else if( (last_time_slider_Value >= 4*60 && direction > 0 ) || (last_time_slider_Value > 4*60 && direction < 0 ) ) //after 4h
+        {
+            value = last_time_slider_Value+(direction*30);
         }
         else
         {
-            if(value < 4*4) // go in 15 min steps
-            {
-                minutes = (value % 4)*15;
-                hours = (value%(24*4))/4;
-            }
-            else if (value < 4*4+20*2) //after 4h go in 30min steps
-            {
-                minutes = (value % 2)*30;
-                hours = (((value-4*4)%(24*2))/2)+4;
-            }
-            else // after 24h go in 1h steps
-            {
-                hours = (value-(4*4+20*2))%24;
-                days = ((value-(4*4+20*2))/24)+1;
-            }
-            sprintf(str, "Time: %d:%02d:%02d D", days, hours, minutes);
+            value = last_time_slider_Value+(direction*15);
+        }
+
+        lv_slider_set_value(slider_time, value, LV_ANIM_ON);
+        last_time_slider_Value = value;
+        
+        uint8_t minutes = value%60;
+        uint8_t hours = (value/60)%24;
+        uint8_t days = value/(24*60);
+
+        if (value > MAX_TIME)
+        {
+            sprintf(str, "Time: unlimited");
+        }
+        else if (value < 24*60)
+        {
+            sprintf(str, "Time: %02dh %02dmin", hours, minutes);
+        }        
+        else
+        {
+            sprintf(str, "Time: %dd %02dh", days, hours);
         }
         lv_label_set_text(label_time, str);
+
+        Serial.println(value);
     }
     break;
 

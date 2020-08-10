@@ -1,7 +1,7 @@
 #ifndef __PAGE_SETUP_H__
 #define __PAGE_SETUP_H__
 
-#define MAX_TIME 81
+#define MAX_TIME 5*24*60
 
 lv_obj_t* page_setup_init(lv_obj_t *tabs);
 

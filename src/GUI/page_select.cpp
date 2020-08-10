@@ -7,6 +7,7 @@
 
 lv_obj_t *page;
 lv_obj_t *btn_mtrx;
+uint8_t lastButton = 0;
 uint8_t selectedProfileId = 0;
 
 const uint8_t btnm_id_map[] = {PLA, PETG, ABS, 0, TPU, PC, PVA, 0, DESSICANT, KEEP_DRY};
@@ -73,7 +74,6 @@ lv_obj_t* page_select_init(lv_obj_t * tabs)
     return page;
 }
 
-
 void setTab_select(lv_group_t * group)
 {
 
@@ -81,21 +81,17 @@ void setTab_select(lv_group_t * group)
     lv_group_add_obj(group, btn_mtrx);
     lv_group_focus_obj(btn_mtrx);
     lv_group_set_editing(group, true);
+    lv_btnmatrix_set_focused_btn(btn_mtrx, lastButton);
 }
 
 void buttons_cb(lv_obj_t * obj, lv_event_t event)
 {
-
-    Serial.print("buttons: ");
-    Serial.println(event);
-
-    
-
     switch (event) {
 
     case LV_EVENT_SHORT_CLICKED:
         {
             uint16_t button =  lv_btnmatrix_get_active_btn(btn_mtrx);
+            lastButton = button;
 
             selectedProfileId = btnm_id_map_stripped[button];
 
