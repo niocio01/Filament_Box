@@ -12,22 +12,30 @@ void profiles_init(void)
     addProfile(createProfile(PETG, "PETG", 65, 0, 2));
     addProfile(createProfile(NYLON, "Nylon", 70, 0, 12));
     addProfile(createProfile(PVA, "PVA", 45, 0, 4));
-    addProfile(createProfile(TPU, "TPU-R", 50, 0, 4));
+    addProfile(createProfile(TPU, "TPU", 50, 0, 4));
     addProfile(createProfile(ASA, "ASA", 60, 0, 4));
     addProfile(createProfile(PP, "PP", 55, 0, 6));
     addProfile(createProfile(PC, "PC", 70, 0, 10));
     addProfile(createProfile(KEEP_DRY, "Keep Dry", 0, 0, 0));
 
-   for (int i = 0; i < noOfProfiles; i++)
-   {
-       Serial.print(i);
-       Serial.print(": ");
-       Serial.print(profiles[i]->name);
-       Serial.print("(");
-       Serial.print(profiles[i]->id);
-       Serial.print(") @ ");
-       Serial.println(profiles[i]->temperature);
+    Serial.print("\nAdded " );
+    Serial.print(noOfProfiles);
+    Serial.println(" Profiles:");
+
+    for (int i = 0; i < noOfProfiles; i++)
+    {
+        Serial.print(i+1);
+        Serial.print(".: ");
+        Serial.print(profiles[i]->name);
+        Serial.print("(");
+        Serial.print(profiles[i]->id);
+        Serial.print(")\t@ ");
+        Serial.print(profiles[i]->temperature);
+        Serial.print("°C for ");
+        Serial.print(profiles[i]->time.hours);
+        Serial.println(" hours");
    }
+   Serial.println("");
 }
 
 

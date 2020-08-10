@@ -10,7 +10,7 @@ lv_obj_t *btn_mtrx;
 uint8_t lastButton = 0;
 uint8_t selectedProfileId = 0;
 
-const uint8_t btnm_id_map[] = {PLA, PETG, ABS, 0, TPU, PC, PVA, 0, DESSICANT, KEEP_DRY};
+const uint8_t btnm_id_map[] = {PLA, PETG, ABS, TPU, 0,  PC, PP, PVA, NYLON, 0, DESSICANT, KEEP_DRY};
 uint8_t btnm_id_map_stripped[(sizeof(btnm_id_map)/sizeof(btnm_id_map[0]))];
 
 lv_obj_t* page_select_init(lv_obj_t * tabs)
@@ -32,14 +32,8 @@ lv_obj_t* page_select_init(lv_obj_t * tabs)
         }
         else
         {
-            Serial.print("button: ");
-            Serial.print(i);
-            Serial.print(" : ");
-            Serial.print(get_profile(btnm_id_map[i])->name);
             btnm_map[i] = get_profile(btnm_id_map[i])->name;
             btnm_id_map_stripped[cnt] = btnm_id_map[i];
-            Serial.print(" : ");
-            Serial.println(cnt);
             cnt++;
         }
     }
@@ -94,11 +88,6 @@ void buttons_cb(lv_obj_t * obj, lv_event_t event)
             lastButton = button;
 
             selectedProfileId = btnm_id_map_stripped[button];
-
-            Serial.print("clicked button: ");
-            Serial.print(button);
-            Serial.print(" ID: ");
-            Serial.println(selectedProfileId);
 
             set_tab(TAB_SETUP);
         }

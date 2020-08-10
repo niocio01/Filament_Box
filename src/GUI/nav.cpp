@@ -36,7 +36,6 @@ void nav_init(void)
 
     /* ---------------------------------------- tabs ---------------------------------------------*/
     tabs = lv_tabview_create(lv_scr_act(), NULL);
-    lv_obj_set_event_cb(tabs, tabs_event_cb);
 
     page_select = page_select_init(tabs);
     page_setup = page_setup_init(tabs);
@@ -73,63 +72,20 @@ bool read_encoder(lv_indev_drv_t * indev, lv_indev_data_t * data)
     return false;
 }
 
-void tabs_event_cb(lv_obj_t * obj, lv_event_t event)
-{
-    Serial.print("tabs event: ");
-    Serial.println(event);
-
-    switch (event)
-    {
-    case LV_EVENT_SHORT_CLICKED:
-        uint16_t currentTab = lv_tabview_get_tab_act(tabs);
-
-        switch (currentTab)
-        {
-        case TAB_SELECT:
-            set_tab(TAB_SELECT);
-            break;
-
-        case TAB_SETUP:
-            set_tab(TAB_SETUP);
-            break;
-
-        case TAB_RUN:
-            /* code */
-            break;
-
-
-        default:
-            break;
-        }
-        if (lv_tabview_get_tab_act(tabs) == 0)
-        {
-            //enterbutton = true;
-            //lv_group_focus_obj(buttons);
-            //lv_group_set_editing(group1, true);
-        }
-        break;
-    }
-}
-
 void set_tab(tabs_t tab)
 {
-    Serial.println("Tab switch to Tab No: ");
-    Serial.println(tab);
     lv_tabview_set_tab_act(tabs, tab, LV_ANIM_ON);
     switch (tab)
         {
         case TAB_SELECT:
-            Serial.println("selsect");
             setTab_select(group);
             break;
 
         case TAB_SETUP:
-        Serial.println("setup");
             setTab_setup(group);
             break;
 
         case TAB_RUN:
-            Serial.println("run");
             break;
 
         default:

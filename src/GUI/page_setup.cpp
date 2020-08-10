@@ -320,8 +320,6 @@ void slider_time_cb(lv_obj_t * obj, lv_event_t event)
             sprintf(str, "Time: %dd %02dh", days, hours);
         }
         lv_label_set_text(label_time, str);
-
-        Serial.println(value);
     }
     break;
 
