@@ -37,8 +37,8 @@ void nav_init(void)
     /* ---------------------------------------- tabs ---------------------------------------------*/
     tabs = lv_tabview_create(lv_scr_act(), NULL);
 
-    page_select = page_select_init(tabs);
-    page_setup = page_setup_init(tabs);
+    page_select = select_page_init(tabs);
+    page_setup = setup_page_init(tabs);
     page_run = lv_tabview_add_tab(tabs, "Run");
 
     lv_obj_set_style_local_pad_top(tabs, LV_TABVIEW_PART_TAB_BTN, LV_STATE_DEFAULT, 0);
@@ -78,11 +78,11 @@ void set_tab(tabs_t tab)
     switch (tab)
         {
         case TAB_SELECT:
-            setTab_select(group);
+            select_setTab(group);
             break;
 
         case TAB_SETUP:
-            setTab_setup(group);
+            setup_setTab(group);
             break;
 
         case TAB_RUN:

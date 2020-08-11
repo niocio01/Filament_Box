@@ -3,15 +3,15 @@
 
 #define MAX_TIME 5*24*60
 
-lv_obj_t* page_setup_init(lv_obj_t *tabs);
+lv_obj_t* setup_page_init(lv_obj_t *tabs);
 
-void setTab_setup(lv_group_t *group);
+void setup_setTab(lv_group_t *group);
 
-void btn_back_cb(lv_obj_t * obj, lv_event_t event);
-void btn_run_cb(lv_obj_t * obj, lv_event_t event);
+void setup_btn_back_cb(lv_obj_t * obj, lv_event_t event);
+void setup_btn_run_cb(lv_obj_t * obj, lv_event_t event);
 
-void slider_temp_cb(lv_obj_t * obj, lv_event_t event);
-void slider_hum_cb(lv_obj_t * obj, lv_event_t event);
-void slider_time_cb(lv_obj_t * obj, lv_event_t event);
+void setup_slider_temperature_cb(lv_obj_t * obj, lv_event_t event);
+void setup_slider_humidity_cb(lv_obj_t * obj, lv_event_t event);
+void setup_slider_time_cb(lv_obj_t * obj, lv_event_t event);
 
 #endif // __PAGE_SETUP_H__
