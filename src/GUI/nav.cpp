@@ -39,7 +39,7 @@ void nav_init(void)
 
     page_select = select_page_init(tabs);
     page_setup = setup_page_init(tabs);
-    page_run = lv_tabview_add_tab(tabs, "Run");
+    page_run = run_page_init(tabs);
 
     lv_obj_set_style_local_pad_top(tabs, LV_TABVIEW_PART_TAB_BTN, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_pad_bottom(tabs, LV_TABVIEW_PART_TAB_BTN, LV_STATE_DEFAULT, 0);
