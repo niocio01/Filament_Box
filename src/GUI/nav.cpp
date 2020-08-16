@@ -86,6 +86,7 @@ void set_tab(tabs_t tab)
             break;
 
         case TAB_RUN:
+            run_setTab(group);
             break;
 
         default:

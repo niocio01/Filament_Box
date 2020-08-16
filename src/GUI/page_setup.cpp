@@ -27,7 +27,6 @@ lv_obj_t * setup_label_humidity;
 lv_obj_t * setup_slider_time;
 lv_obj_t * setup_label_time;
 
-profile_t * currentProfile;
 int last_time_slider_Value = 0;
 
 lv_obj_t* setup_page_init(lv_obj_t * tabs)
@@ -62,7 +61,7 @@ lv_obj_t* setup_page_init(lv_obj_t * tabs)
     /* --------------------------------------------Buttons-----------------------------------------*/
     setup_btn_back = lv_btn_create(setup_page, NULL);
     lv_obj_align(setup_btn_back, setup_page, LV_ALIGN_IN_TOP_LEFT, 8, 5);
-    lv_obj_set_size(setup_btn_back, dispWidth-(16+10+50), 20);
+    lv_obj_set_size(setup_btn_back, dispWidth-(16+10+50), 22);
     lv_obj_set_event_cb(setup_btn_back, setup_btn_back_cb);
     lv_obj_add_style(setup_btn_back, LV_BTN_PART_MAIN, &style_btn);
 
@@ -72,7 +71,7 @@ lv_obj_t* setup_page_init(lv_obj_t * tabs)
 
     setup_btn_run = lv_btn_create(setup_page, NULL);
     lv_obj_align(setup_btn_run, setup_page, LV_ALIGN_IN_TOP_LEFT, dispWidth-(16+10+50)+18, 5);
-    lv_obj_set_size(setup_btn_run, 50, 20);
+    lv_obj_set_size(setup_btn_run, 50, 22);
     lv_obj_set_event_cb(setup_btn_run, setup_btn_run_cb);
     lv_obj_add_style(setup_btn_run, LV_BTN_PART_MAIN, &style_btn);
 
@@ -142,7 +141,7 @@ void setup_setTab(lv_group_t * group)
     lv_group_set_editing(group, false);
     lv_group_set_wrap(group, false);
 
-    currentProfile = get_profile(select_get_selected_profile_id());
+    profile_t * currentProfile = get_profile(select_get_selected_profile_id());
 
     char str1[40];
     char str2[40];
