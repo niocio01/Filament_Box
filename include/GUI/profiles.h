@@ -5,6 +5,7 @@
 
 typedef enum
 {
+    CUSTOM = 0,
     DESSICANT = 1,
     PLA,
     PETG,
@@ -34,12 +35,22 @@ typedef struct profile_t
     dry_time_t time;
 } profile_t;
 
-void profiles_init(void);
-void addProfile(profile_t * profile);
-profile_t * get_profile(uint8_t id);
+extern uint8_t selectedProfileId;
+extern profile_t * currentProfile;
 
-profile_t *createProfile (uint8_t id, char name[10], uint8_t temperature, uint8_t humidity, uint8_t time_hours);
+void profiles_init(void);
+void profiles_addProfile(profile_t * profile);
+profile_t * profiles_getProfile(uint8_t id);
+
+profile_t * profiles_createProfile (uint8_t id, char name[10], uint8_t temperature, uint8_t humidity, uint8_t time_hours);
 // void createProfile(uint8_t index, char name[10], uint8_t temperature, uint8_t humidity, uint8_t time_days, uint8_t time_hours, uint8_t time_minutes);
+
+void profiles_setCurrentProfile_byValues(char name[10], uint8_t temperature, uint8_t humidity, uint8_t time_days, uint8_t time_hours, uint8_t time_minutes);
+
+void profiles_setCurrentProfile_byPreset(uint8_t presetId);
+
+bool profiles_Compare_CurrentToPreset(void);
+
 
 
 #endif // __PROFILES_H__

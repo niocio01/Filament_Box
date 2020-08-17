@@ -9,6 +9,9 @@ typedef enum
 } tabs_t;
 
 
+extern lv_group_t *group;
+
+
 void nav_init(void);
 
 void updateTask(void *pvParameter);

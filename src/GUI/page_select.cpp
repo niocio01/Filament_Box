@@ -1,14 +1,16 @@
+#include <Arduino.h>
 #include <lvgl.h>
 
 #include "GUI/display.h"
 #include "GUI/nav.h"
-#include "GUI/page_select.h"
 #include "GUI/profiles.h"
+#include "GUI/page_select.h"
+#include "GUI/page_setup.h"
+#include "GUI/page_run.h"
 
 lv_obj_t *select_Page;
 lv_obj_t *select_btn_mtrx;
 uint8_t lastButton = 0;
-uint8_t selectedProfileId = 0;
 
 const uint8_t btnm_id_map[] = {PLA, PETG, ABS, TPU, 0,  PC, PP, PVA, NYLON, 0, DESSICANT, KEEP_DRY};
 uint8_t btnm_id_map_stripped[(sizeof(btnm_id_map)/sizeof(btnm_id_map[0]))];
@@ -32,7 +34,7 @@ lv_obj_t* select_page_init(lv_obj_t * tabs)
         }
         else
         {
-            btnm_map[i] = get_profile(btnm_id_map[i])->name;
+            btnm_map[i] = profiles_getProfile(btnm_id_map[i])->name;
             btnm_id_map_stripped[cnt] = btnm_id_map[i];
             cnt++;
         }
@@ -68,7 +70,7 @@ lv_obj_t* select_page_init(lv_obj_t * tabs)
     return select_Page;
 }
 
-void select_setTab(lv_group_t * group)
+void select_setTab(void)
 {
 
     lv_group_remove_all_objs(group);
@@ -87,7 +89,7 @@ void select_btn_mtrx_cb(lv_obj_t * obj, lv_event_t event)
             uint16_t button =  lv_btnmatrix_get_active_btn(select_btn_mtrx);
             lastButton = button;
 
-            selectedProfileId = btnm_id_map_stripped[button];
+            profiles_setCurrentProfile_byPreset(btnm_id_map_stripped[button]);
 
             set_tab(TAB_SETUP);
         }

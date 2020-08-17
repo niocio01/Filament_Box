@@ -3,10 +3,10 @@
 
 #include "GUI/display.h"
 #include "GUI/nav.h"
+#include "GUI/profiles.h"
 #include "GUI/page_select.h"
 #include "GUI/page_setup.h"
 #include "GUI/page_run.h"
-#include "GUI/profiles.h"
 
 lv_obj_t *run_page;
 
@@ -153,13 +153,11 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     return run_page;
 }
 
-void run_setTab(lv_group_t * group)
+void run_setTab(void)
 {
     lv_group_remove_all_objs(group);
     lv_group_add_obj(group, run_btn_back);
     lv_group_add_obj(group, run_btn_materials);
-
-    profile_t * currentProfile = get_profile(select_get_selected_profile_id());
 
     char str1[40];
     char str2[40];

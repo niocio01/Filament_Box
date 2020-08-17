@@ -3,10 +3,11 @@
 
 #include "GUI/display.h"
 #include "GUI/nav.h"
-#include "GUI/page_setup.h"
-#include "GUI/page_select.h"
 #include "GUI/profiles.h"
-// #include "GUI/icons/temperature.c"
+#include "GUI/page_select.h"
+#include "GUI/page_setup.h"
+#include "GUI/page_run.h"
+
 
 LV_IMG_DECLARE(temperature);
 
@@ -26,6 +27,8 @@ lv_obj_t * setup_label_humidity;
 
 lv_obj_t * setup_slider_time;
 lv_obj_t * setup_label_time;
+
+extern profile_t * currentProfile;
 
 int last_time_slider_Value = 0;
 
@@ -129,7 +132,7 @@ lv_obj_t* setup_page_init(lv_obj_t * tabs)
     return setup_page;
 }
 
-void setup_setTab(lv_group_t * group)
+void setup_setTab(void)
 {
     lv_group_remove_all_objs(group);
     lv_group_add_obj(group, setup_btn_back);
@@ -140,8 +143,6 @@ void setup_setTab(lv_group_t * group)
     lv_group_focus_obj(setup_btn_run);
     lv_group_set_editing(group, false);
     lv_group_set_wrap(group, false);
-
-    profile_t * currentProfile = get_profile(select_get_selected_profile_id());
 
     char str1[40];
     char str2[40];

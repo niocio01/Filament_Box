@@ -3,7 +3,7 @@
 
 lv_obj_t* select_page_init(lv_obj_t *tabs);
 
-void select_setTab(lv_group_t * group);
+void select_setTab(void);
 void select_btn_mtrx_cb(lv_obj_t * obj, lv_event_t event);
 uint8_t select_get_selected_profile_id(void);
 

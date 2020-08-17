@@ -12,14 +12,13 @@
 #include "GUI/input.h"
 #include "GUI/nav.h"
 
-lv_obj_t *tabs;
 lv_group_t *group;
+
+lv_obj_t *tabs;
 
 lv_obj_t *page_select;
 lv_obj_t *page_setup;
 lv_obj_t *page_run;
-
-lv_obj_t *slider_temperature2;
 
 void nav_init(void)
 {
@@ -78,15 +77,15 @@ void set_tab(tabs_t tab)
     switch (tab)
         {
         case TAB_SELECT:
-            select_setTab(group);
+            select_setTab();
             break;
 
         case TAB_SETUP:
-            setup_setTab(group);
+            setup_setTab();
             break;
 
         case TAB_RUN:
-            run_setTab(group);
+            run_setTab();
             break;
 
         default:
