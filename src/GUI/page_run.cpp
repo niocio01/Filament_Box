@@ -162,7 +162,7 @@ void run_setTab(void)
     char str1[40];
     char str2[40];
     strcpy(str1, "Stop: ");
-    strcpy(str2, currentProfile->name);
+    strcpy(str2, profilesByID[CUSTOM]->name);
     strcat(str1, str2);
 
     lv_label_set_text(run_label_back, str1);

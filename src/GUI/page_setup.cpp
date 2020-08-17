@@ -28,8 +28,6 @@ lv_obj_t * setup_label_humidity;
 lv_obj_t * setup_slider_time;
 lv_obj_t * setup_label_time;
 
-extern profile_t * currentProfile;
-
 int last_time_slider_Value = 0;
 
 lv_obj_t* setup_page_init(lv_obj_t * tabs)
@@ -147,16 +145,16 @@ void setup_setTab(void)
     char str1[40];
     char str2[40];
     strcpy(str1, "Selected: ");
-    strcpy(str2, currentProfile->name);
+    strcpy(str2, profilesByID[profilesByID[CUSTOM]->id]->name);
     strcat(str1, str2);
 
     lv_label_set_text(setup_label_back, str1);
-    lv_slider_set_value(setup_slider_temperature, (currentProfile->temperature-15)/5, LV_ANIM_ON);
-    lv_slider_set_value(setup_slider_humidity, currentProfile->humidity, LV_ANIM_ON);
+    lv_slider_set_value(setup_slider_temperature, (profilesByID[CUSTOM]->temperature-15)/5, LV_ANIM_ON);
+    lv_slider_set_value(setup_slider_humidity, profilesByID[CUSTOM]->humidity, LV_ANIM_ON);
 
-    int8_t minutes = (currentProfile->time.minutes/15)*15;
-    int8_t hours = currentProfile->time.hours;
-    int8_t days = currentProfile->time.days;
+    int8_t minutes = (profilesByID[CUSTOM]->time.minutes/15)*15;
+    int8_t hours = profilesByID[CUSTOM]->time.hours;
+    int8_t days = profilesByID[CUSTOM]->time.days;
 
     int16_t time = minutes + hours*60 + days*24*60;
     last_time_slider_Value = time;
@@ -165,6 +163,45 @@ void setup_setTab(void)
     lv_event_send(setup_slider_temperature, LV_EVENT_VALUE_CHANGED, NULL);
     lv_event_send(setup_slider_humidity, LV_EVENT_VALUE_CHANGED, NULL);
     lv_event_send(setup_slider_time, LV_EVENT_VALUE_CHANGED, NULL);
+}
+
+void setup_updateProfileName(void)
+{
+    static bool changedTagSet = false;
+
+    bool profilesAreTheSame = profiles_Compare_CurrentToPreset();
+
+    Serial.print(profilesAreTheSame);
+
+    if( !profilesAreTheSame && !changedTagSet) // if not the same and tag not set
+    {
+        changedTagSet = true;
+
+        char str1[40];
+        char str2[40];
+
+        strcpy(str1, "Selected: ");
+        strcpy(str2, profilesByID[CUSTOM]->name);
+        
+        strcat(str1, str2);
+
+        lv_label_set_text(setup_label_back, str1);
+        
+    }
+
+    else if(profilesAreTheSame && changedTagSet) // if profiles are the same and the tag is set
+    {
+        changedTagSet = false;
+
+        char str1[40];
+        char str2[40];
+
+        strcpy(str1, "Selected: ");
+        strcpy(str2, profilesByID[profilesByID[CUSTOM]->id]->name);
+        strcat(str1, str2);
+
+        lv_label_set_text(setup_label_back, str1);
+    }
 }
 
 void setup_btn_back_cb(lv_obj_t * obj, lv_event_t event)
@@ -203,15 +240,19 @@ void setup_slider_temperature_cb(lv_obj_t * obj, lv_event_t event)
         uint8_t value = lv_slider_get_value(setup_slider_temperature);
         uint8_t temperature = 0;
 
+        value == 0 ? temperature = 0 : temperature = value*5+15;
+
         if (value == 0)
         {
             sprintf(str, "Temp: OFF");
         }
         else
         {
-            value == 0 ? temperature = 0 : temperature = value*5+15;
             sprintf(str, "Temp: %02d°C", temperature);
         }
+
+        profilesByID[CUSTOM]->temperature = temperature;
+        setup_updateProfileName();
         lv_label_set_text(setup_label_temperature, str);
     }
     break;
@@ -231,6 +272,8 @@ void setup_slider_humidity_cb(lv_obj_t * obj, lv_event_t event)
         uint8_t value = lv_slider_get_value(setup_slider_humidity);
         uint8_t humidity = 0;
 
+        value == 0 ? humidity = 0 : humidity = value*5;
+
         if (value == 0)
         {
             sprintf(str, "Hum:  ON");
@@ -241,9 +284,11 @@ void setup_slider_humidity_cb(lv_obj_t * obj, lv_event_t event)
         }
         else
         {
-            value == 0 ? humidity = 0 : humidity = value*5;
             sprintf(str, "Hum:  %02d%%", humidity);
         }
+
+        profilesByID[CUSTOM]->humidity = humidity;
+        setup_updateProfileName();
         lv_label_set_text(setup_label_humidity, str);
     }
     break;
@@ -303,6 +348,11 @@ void setup_slider_time_cb(lv_obj_t * obj, lv_event_t event)
         uint8_t minutes = value%60;
         uint8_t hours = (value/60)%24;
         uint8_t days = value/(24*60);
+
+        profilesByID[CUSTOM]->time.minutes = minutes;
+        profilesByID[CUSTOM]->time.hours = hours;
+        profilesByID[CUSTOM]->time.days = days;
+        setup_updateProfileName();
 
         if (value > MAX_TIME)
         {

@@ -1,12 +1,10 @@
 #include <string.h>
 #include "profiles.h"
 
-struct profile_t * profiles[20];
+struct profile_t * profilesByTemperature[20];
+struct profile_t * profilesByID[20];
 
 uint8_t noOfProfiles = 0;
-
-uint8_t selectedProfileId;
-profile_t * currentProfile;
 
 void profiles_init(void)
 {
@@ -30,20 +28,19 @@ void profiles_init(void)
     {
         Serial.print(i+1);
         Serial.print(".: ");
-        Serial.print(profiles[i]->name);
+        Serial.print(profilesByTemperature[i]->name);
         Serial.print("(");
-        Serial.print(profiles[i]->id);
+        Serial.print(profilesByTemperature[i]->id);
         Serial.print(")\t@ ");
-        Serial.print(profiles[i]->temperature);
+        Serial.print(profilesByTemperature[i]->temperature);
         Serial.print("°C for ");
-        Serial.print(profiles[i]->time.hours);
+        Serial.print(profilesByTemperature[i]->time.hours);
         Serial.println(" hours");
-   }
-   Serial.println("");
+    }
+    Serial.println("");
 
-    selectedProfileId = 0;
-    currentProfile = profiles_createProfile(CUSTOM, "custom", 0, 100, 0);
-   
+    profilesByID[CUSTOM] = profiles_createProfile(CUSTOM, "custom", 0, 100, 0);
+
 }
 
 
@@ -51,25 +48,26 @@ void profiles_addProfile(profile_t * profile)
 {
     if (noOfProfiles == 0)
     {
-        profiles[0] = profile;
+        profilesByTemperature[0] = profile;
     }
     else
     {
         int insertPoint = 0;
         for (int i = 0; i < noOfProfiles; i++)
         {
-            if(profiles[i]->temperature < profile->temperature)
+            if(profilesByTemperature[i]->temperature < profile->temperature)
             {
                 insertPoint++;
             }
         }
         for (int j = noOfProfiles+1; j > insertPoint; j--)
         {
-            profiles[j] = profiles[j-1];
+            profilesByTemperature[j] = profilesByTemperature[j-1];
         }
-        profiles[insertPoint] = profile;
+        profilesByTemperature[insertPoint] = profile;
         
     }
+    profilesByID[profile->id] = profile;
 
     noOfProfiles++;
 }
@@ -93,49 +91,33 @@ profile_t * profiles_createProfile (uint8_t id, char name[10], uint8_t temperatu
     return p;
 }
 
-profile_t * profiles_getProfile(uint8_t id)
-{
-    for (int i = 0; i < noOfProfiles; i++)
-    {
-        if (profiles[i]->id == id)
-        {
-            return profiles[i];
-        }
-    }
-    // should never get here
-    return 0;
-}
 
-
-void profiles_setCurrentProfile_byValues(char name[10], uint8_t temperature, uint8_t humidity, uint8_t time_days, uint8_t time_hours, uint8_t time_minutes)
+void profiles_setCurrentProfile(uint8_t presetId)
 {
-    currentProfile->id = 0;
-    currentProfile->temperature = temperature;
-    currentProfile->humidity = humidity;
-    currentProfile->time.days = time_days;
-    currentProfile->time.hours = time_hours;
-    currentProfile->time.minutes = time_minutes;
-}
+    profilesByID[CUSTOM]->id = presetId;
+    profilesByID[CUSTOM]->temperature = profilesByID[presetId]->temperature;
+    profilesByID[CUSTOM]->humidity = profilesByID[presetId]->humidity;
+    profilesByID[CUSTOM]->time.days = profilesByID[presetId]->time.days;
+    profilesByID[CUSTOM]->time.hours = profilesByID[presetId]->time.hours;
+    profilesByID[CUSTOM]->time.minutes = profilesByID[presetId]->time.minutes;
 
-void profiles_setCurrentProfile_byPreset(uint8_t presetId)
-{
-    selectedProfileId = presetId;
-    currentProfile->id = presetId;
-    strcpy(currentProfile->name, profiles_getProfile(presetId)->name);
-    currentProfile->temperature = profiles_getProfile(presetId)->temperature;
-    currentProfile->humidity = profiles_getProfile(presetId)->humidity;
-    currentProfile->time.days = profiles_getProfile(presetId)->time.days;
-    currentProfile->time.hours = profiles_getProfile(presetId)->time.hours;
-    currentProfile->time.minutes = profiles_getProfile(presetId)->time.minutes;
+    char str1[40];
+    char str2[40];
+
+    strcpy(str1, profilesByID[profilesByID[CUSTOM]->id]->name);
+    strcpy(str2, " *");
+    strcat(str1, str2);
+
+    strcpy(profilesByID[CUSTOM]->name, str1);
 }
 
 bool profiles_Compare_CurrentToPreset(void)
 {
-    if(currentProfile->temperature != profiles_getProfile(selectedProfileId)->temperature) return false;
-    if(currentProfile->humidity != profiles_getProfile(selectedProfileId)->humidity) return false;
-    if(currentProfile->time.days != profiles_getProfile(selectedProfileId)->time.days) return false;
-    if(currentProfile->time.hours != profiles_getProfile(selectedProfileId)->time.hours) return false;
-    if(currentProfile->time.minutes != profiles_getProfile(selectedProfileId)->time.minutes) return false;
+    if(profilesByID[CUSTOM]->temperature != profilesByID[profilesByID[CUSTOM]->id]->temperature) {return false;}
+    if(profilesByID[CUSTOM]->humidity != profilesByID[profilesByID[CUSTOM]->id]->humidity) {return false;}
+    if(profilesByID[CUSTOM]->time.days != profilesByID[profilesByID[CUSTOM]->id]->time.days) {return false;}
+    if(profilesByID[CUSTOM]->time.hours != profilesByID[profilesByID[CUSTOM]->id]->time.hours) {return false;}
+    if(profilesByID[CUSTOM]->time.minutes != profilesByID[profilesByID[CUSTOM]->id]->time.minutes) {return false;}
 
     return true;
 }

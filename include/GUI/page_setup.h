@@ -7,6 +7,8 @@ lv_obj_t* setup_page_init(lv_obj_t *tabs);
 
 void setup_setTab(void);
 
+void setup_updateProfileName(void);
+
 void setup_btn_back_cb(lv_obj_t * obj, lv_event_t event);
 void setup_btn_run_cb(lv_obj_t * obj, lv_event_t event);
 

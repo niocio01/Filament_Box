@@ -35,19 +35,16 @@ typedef struct profile_t
     dry_time_t time;
 } profile_t;
 
-extern uint8_t selectedProfileId;
-extern profile_t * currentProfile;
+extern struct profile_t * profilesByTemperature[20];
+extern struct profile_t * profilesByID[20];
 
 void profiles_init(void);
 void profiles_addProfile(profile_t * profile);
-profile_t * profiles_getProfile(uint8_t id);
 
 profile_t * profiles_createProfile (uint8_t id, char name[10], uint8_t temperature, uint8_t humidity, uint8_t time_hours);
 // void createProfile(uint8_t index, char name[10], uint8_t temperature, uint8_t humidity, uint8_t time_days, uint8_t time_hours, uint8_t time_minutes);
 
-void profiles_setCurrentProfile_byValues(char name[10], uint8_t temperature, uint8_t humidity, uint8_t time_days, uint8_t time_hours, uint8_t time_minutes);
-
-void profiles_setCurrentProfile_byPreset(uint8_t presetId);
+void profiles_setCurrentProfile(uint8_t presetId);
 
 bool profiles_Compare_CurrentToPreset(void);
 

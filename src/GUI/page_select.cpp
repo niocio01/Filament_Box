@@ -34,7 +34,7 @@ lv_obj_t* select_page_init(lv_obj_t * tabs)
         }
         else
         {
-            btnm_map[i] = profiles_getProfile(btnm_id_map[i])->name;
+            btnm_map[i] = profilesByID[(btnm_id_map[i])]->name;
             btnm_id_map_stripped[cnt] = btnm_id_map[i];
             cnt++;
         }
@@ -89,7 +89,7 @@ void select_btn_mtrx_cb(lv_obj_t * obj, lv_event_t event)
             uint16_t button =  lv_btnmatrix_get_active_btn(select_btn_mtrx);
             lastButton = button;
 
-            profiles_setCurrentProfile_byPreset(btnm_id_map_stripped[button]);
+            profiles_setCurrentProfile(btnm_id_map_stripped[button]);
 
             set_tab(TAB_SETUP);
         }
@@ -98,9 +98,4 @@ void select_btn_mtrx_cb(lv_obj_t * obj, lv_event_t event)
     default:
         break;
     }
-}
-
-uint8_t select_get_selected_profile_id(void)
-{
-    return selectedProfileId;
 }
