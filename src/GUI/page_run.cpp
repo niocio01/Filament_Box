@@ -20,8 +20,15 @@ lv_obj_t *run_label_humidity_value;
 lv_obj_t *run_label_humidity_setpoint;
 lv_obj_t *run_led_humidity;
 
+lv_obj_t *run_label_time_title;
+lv_obj_t *run_label_time_value;
+lv_obj_t *run_label_time_setpoint;
+
 lv_obj_t *run_btn_back;
 lv_obj_t *run_label_back;
+
+lv_obj_t *run_btn_pause;
+lv_obj_t *run_label_pause;
 
 lv_obj_t *run_btn_materials;
 lv_obj_t *run_label_materials;
@@ -32,9 +39,22 @@ lv_obj_t *run_list_materialList;
 
 lv_obj_t* run_page_init(lv_obj_t *tabs)
 {
+
     /*------------------------------------Tabs--------------------------------------*/
     run_page = lv_tabview_add_tab(tabs, "Run");
-    lv_page_set_scrollbar_mode(run_page, LV_SCROLLBAR_MODE_OFF);
+    
+    //lv_page_set_scrollbar_mode(run_page, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_set_style_local_pad_top(run_page, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_bottom(run_page, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_left(run_page, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_right(run_page, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
+
+    lv_obj_set_style_local_pad_top(run_page, LV_PAGE_PART_SCROLLABLE, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_bottom(run_page, LV_PAGE_PART_SCROLLABLE, LV_STATE_DEFAULT, 7);
+    lv_obj_set_style_local_pad_left(run_page, LV_PAGE_PART_SCROLLABLE, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_right(run_page, LV_PAGE_PART_SCROLLABLE, LV_STATE_DEFAULT, 0);
+
+    lv_obj_set_style_local_pad_right(run_page, LV_PAGE_PART_SCROLLBAR, LV_STATE_DEFAULT, 0);
 
     /*---------------------------------Style-----------------------------------*/
 
@@ -67,7 +87,7 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_obj_align(run_label_temperature_setpoint, NULL, LV_ALIGN_IN_TOP_LEFT, 137, 8);
 
     run_led_temperature = lv_led_create(run_page, NULL),
-    lv_obj_align(run_led_temperature, NULL, LV_ALIGN_IN_TOP_LEFT, 200, 8);
+    lv_obj_align(run_led_temperature, NULL, LV_ALIGN_IN_TOP_LEFT, 197, 8);
     lv_obj_set_size(run_led_temperature, 20, 18);
 
     lv_obj_set_style_local_shadow_spread(run_led_temperature, LV_LED_PART_MAIN, LV_STATE_DEFAULT, 5);
@@ -77,21 +97,21 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
 
     run_label_humidity_title = lv_label_create(run_page, NULL);
     lv_label_set_text(run_label_humidity_title, "Hum:   ");
-    lv_obj_align(run_label_humidity_title, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 8+30);
+    lv_obj_align(run_label_humidity_title, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 8+33);
     
     run_label_humidity_value = lv_label_create(run_page, NULL);
     lv_label_set_text(run_label_humidity_value, "12.7");
     lv_label_set_recolor(run_label_humidity_value, true);
-    lv_obj_align(run_label_humidity_value, NULL, LV_ALIGN_IN_TOP_LEFT, 70, 1+30);
+    lv_obj_align(run_label_humidity_value, NULL, LV_ALIGN_IN_TOP_LEFT, 70, 1+33);
     lv_obj_add_style(run_label_humidity_value, LV_LABEL_PART_MAIN, &font_Large);
     lv_obj_set_style_local_text_color(run_label_humidity_value, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLUE);
 
     run_label_humidity_setpoint = lv_label_create(run_page, NULL);
     lv_label_set_text(run_label_humidity_setpoint, "/ 10%");
-    lv_obj_align(run_label_humidity_setpoint, NULL, LV_ALIGN_IN_TOP_LEFT, 137, 8+30);
+    lv_obj_align(run_label_humidity_setpoint, NULL, LV_ALIGN_IN_TOP_LEFT, 137, 8+33);
 
     run_led_humidity = lv_led_create(run_page, NULL),
-    lv_obj_align(run_led_humidity, NULL, LV_ALIGN_IN_TOP_LEFT, 200, 8+30);
+    lv_obj_align(run_led_humidity, NULL, LV_ALIGN_IN_TOP_LEFT, 197, 8+33);
     lv_obj_set_size(run_led_humidity, 20, 18);
 
     lv_obj_set_style_local_shadow_spread(run_led_humidity, LV_LED_PART_MAIN, LV_STATE_DEFAULT, 5);
@@ -99,26 +119,51 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_obj_set_style_local_bg_color(run_led_humidity, LV_LED_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLUE);
     lv_obj_set_style_local_shadow_color(run_led_humidity, LV_LED_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLUE);
 
+    /*---------------------------------Humidity-----------------------------------*/
+
+    run_label_time_title = lv_label_create(run_page, NULL);
+    lv_label_set_text(run_label_time_title, "Time:");
+    lv_obj_align(run_label_time_title, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 8+33+33);
+    
+    run_label_time_value = lv_label_create(run_page, NULL);
+    lv_label_set_text(run_label_time_value, "0:03:25:40");
+    lv_label_set_recolor(run_label_time_value, true);
+    lv_obj_align(run_label_time_value, NULL, LV_ALIGN_IN_TOP_LEFT, 70, 1+33+33);
+    lv_obj_add_style(run_label_time_value, LV_LABEL_PART_MAIN, &font_Large);
+    lv_obj_set_style_local_text_color(run_label_time_value, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GREEN);
+
     /*---------------------------------button Back-----------------------------------*/
     run_btn_back = lv_btn_create (run_page, NULL);
-    lv_obj_align(run_btn_back, NULL, LV_ALIGN_IN_TOP_LEFT, 7, 70);
-    lv_obj_set_size(run_btn_back, dispWidth-(14+8+80), 22);
+    lv_obj_align(run_btn_back, NULL, LV_ALIGN_IN_TOP_LEFT, 8, 105);
+    lv_obj_set_size(run_btn_back, dispWidth-(27+8+60), 25);
     lv_obj_set_event_cb(run_btn_back, setup_btn_back_cb);
     lv_obj_add_style(run_btn_back, LV_BTN_PART_MAIN, &style_btn);
 
     run_label_back = lv_label_create(run_btn_back, NULL);
     lv_obj_set_event_cb(run_btn_back, run_btn_back_cb);
 
+    /*---------------------------------button pause-----------------------------------*/
+    run_btn_pause = lv_btn_create (run_page, NULL);
+    //lv_obj_align(run_btn_materials, NULL, LV_ALIGN_IN_TOP_LEFT, 5, 75);
+    lv_obj_align(run_btn_pause, NULL, LV_ALIGN_IN_TOP_LEFT, dispWidth-(27+8+60)+16, 105);
+    lv_obj_set_size(run_btn_pause, 60, 25);
+    lv_obj_set_event_cb(run_btn_pause, setup_btn_back_cb);
+    lv_obj_add_style(run_btn_pause, LV_BTN_PART_MAIN, &style_btn);
+
+    run_label_pause = lv_label_create(run_btn_pause, NULL);
+    lv_label_set_text(run_label_pause, "Pause");
+    lv_obj_set_event_cb(run_label_pause, run_btn_materials_cb);
+
     /*---------------------------------button materials-----------------------------------*/
     run_btn_materials = lv_btn_create (run_page, NULL);
     //lv_obj_align(run_btn_materials, NULL, LV_ALIGN_IN_TOP_LEFT, 5, 75);
-    lv_obj_align(run_btn_materials, NULL, LV_ALIGN_IN_TOP_LEFT, dispWidth-(14+8+80)+14, 70);
-    lv_obj_set_size(run_btn_materials, 80, 22);
+    lv_obj_align(run_btn_materials, NULL, LV_ALIGN_IN_TOP_LEFT, 8, 105+32);
+    lv_obj_set_size(run_btn_materials, dispWidth - 27, 25);
     lv_obj_set_event_cb(run_btn_materials, setup_btn_back_cb);
     lv_obj_add_style(run_btn_materials, LV_BTN_PART_MAIN, &style_btn);
 
     run_label_materials = lv_label_create(run_btn_materials, NULL);
-    lv_label_set_text(run_label_materials, "Materials");
+    lv_label_set_text(run_label_materials, "show compatibility list");
     lv_obj_set_event_cb(run_btn_materials, run_btn_materials_cb);
 
     /*---------------------------------material list-----------------------------------*/
@@ -147,8 +192,9 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_table_set_cell_value(run_list_materialList, 1, 1, LV_SYMBOL_OK);
 
 
-
+    
     xTaskCreate(toggleTask, "Toggle_task", 1024 * 4, NULL, 1, NULL);
+
 
     return run_page;
 }
@@ -156,7 +202,10 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
 void run_setTab(void)
 {
     lv_group_remove_all_objs(group);
+    lv_group_set_focus_cb(group, run_group_cb);
+    lv_group_add_obj(group, run_label_temperature_title);
     lv_group_add_obj(group, run_btn_back);
+    lv_group_add_obj(group, run_btn_pause);
     lv_group_add_obj(group, run_btn_materials);
 
     char str1[40];
@@ -166,6 +215,19 @@ void run_setTab(void)
     strcat(str1, str2);
 
     lv_label_set_text(run_label_back, str1);
+}
+
+void run_group_cb (lv_group_t * group)
+{
+    lv_obj_t * focusedObj = lv_group_get_focused(group);
+     if(focusedObj == run_btn_back)
+     {
+         lv_page_focus(run_page, run_btn_materials, LV_ANIM_ON);
+     }
+     else if (focusedObj == run_label_temperature_title)
+     {
+         lv_page_scroll_ver(run_page, 100);
+     }
 }
 
 void run_btn_back_cb(lv_obj_t * obj, lv_event_t event)

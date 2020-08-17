@@ -33,6 +33,10 @@ void nav_init(void)
     /* ---------------------------------------- profiles ---------------------------------------------*/
     profiles_init();
 
+    /* ---------------------------------------- group ---------------------------------------------*/
+    group = lv_group_create();
+    lv_indev_set_group(encoder, group);
+
     /* ---------------------------------------- tabs ---------------------------------------------*/
     tabs = lv_tabview_create(lv_scr_act(), NULL);
 
@@ -46,9 +50,6 @@ void nav_init(void)
     lv_obj_set_style_local_pad_top(tabs, LV_TABVIEW_PART_TAB_BG, LV_STATE_DEFAULT, 5);
     lv_obj_set_style_local_pad_bottom(tabs, LV_TABVIEW_PART_TAB_BG, LV_STATE_DEFAULT, 10);
 
-    /* ---------------------------------------- group ---------------------------------------------*/
-    group = lv_group_create();
-    lv_indev_set_group(encoder, group);
 
     set_tab(TAB_SELECT);
 
