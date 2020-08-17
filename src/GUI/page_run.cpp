@@ -36,6 +36,7 @@ lv_obj_t *run_label_materials;
 lv_obj_t *run_container_materialList;
 lv_obj_t *run_page_materialList;
 lv_obj_t *run_label_materialList;
+lv_obj_t *run_line_materialList;
 lv_obj_t *run_table_materialList;
 
 lv_obj_t* run_page_init(lv_obj_t *tabs)
@@ -179,11 +180,26 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_label_set_text(run_label_materialList, "Compatible Materials:");
     lv_obj_align(run_label_materialList, run_container_materialList, LV_ALIGN_IN_TOP_MID, 0, 8);
     lv_label_set_align(run_label_materialList, LV_LABEL_ALIGN_CENTER);
-    
+
+
+    run_line_materialList = lv_line_create(run_container_materialList, NULL);
+    static lv_point_t line_points[] = { {0,0} , {dispWidth - (10+20), 0} };
+
+    static lv_style_t style_line;
+    lv_style_init(&style_line);
+    lv_style_set_line_width(&style_line, LV_STATE_DEFAULT, 3);
+    lv_style_set_line_color(&style_line, LV_STATE_DEFAULT, lv_color_hex(0xD4D7D9));
+    lv_style_set_line_rounded(&style_line, LV_STATE_DEFAULT, true);
+
+    lv_line_set_points(run_line_materialList, line_points, 2); 
+    lv_obj_add_style(run_line_materialList, LV_LINE_PART_MAIN, &style_line);
+    lv_obj_align(run_line_materialList, run_container_materialList, LV_ALIGN_IN_TOP_LEFT, 10, 30);
+
 
     run_page_materialList = lv_page_create(run_container_materialList, NULL);
-    lv_obj_set_size(run_page_materialList, dispWidth - 10, dispHeight - (10 + 30) );
-    lv_obj_align(run_page_materialList, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 30);
+    lv_obj_set_size(run_page_materialList, dispWidth - 10, dispHeight - (10 + 33 + 5) );
+    lv_obj_align(run_page_materialList, run_container_materialList, LV_ALIGN_IN_TOP_LEFT, 0, 30);
+    lv_obj_set_event_cb(run_page_materialList, run_page_materialList_cb);
 
     lv_obj_set_style_local_pad_top(run_page_materialList, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_pad_bottom(run_page_materialList, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
@@ -195,11 +211,11 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_obj_set_style_local_pad_left(run_page_materialList, LV_PAGE_PART_SCROLLABLE, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_pad_right(run_page_materialList, LV_PAGE_PART_SCROLLABLE, LV_STATE_DEFAULT, 0);
 
-    lv_obj_set_style_local_pad_right(run_page_materialList, LV_PAGE_PART_SCROLLBAR, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_right(run_page_materialList, LV_PAGE_PART_SCROLLBAR, LV_STATE_DEFAULT, 8);
 
     lv_obj_set_style_local_border_width(run_page_materialList, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_border_width(run_page_materialList, LV_PAGE_PART_SCROLLABLE, LV_STATE_DEFAULT, 0);
-    
+
 
     run_table_materialList = lv_table_create(run_page_materialList, NULL);
     lv_table_set_col_cnt(run_table_materialList, 3);
@@ -207,36 +223,54 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_obj_align(run_table_materialList, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
 
     lv_obj_set_style_local_pad_top(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 0);
-    lv_obj_set_style_local_pad_bottom(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 0);
-    lv_obj_set_style_local_pad_left(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 0);
-    lv_obj_set_style_local_pad_right(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_bottom(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 8);
+    lv_obj_set_style_local_pad_left(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 8);
+    lv_obj_set_style_local_pad_right(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 8);
+    lv_obj_set_style_local_border_width(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 0);
 
-    lv_obj_set_style_local_pad_top(run_table_materialList, LV_TABLE_PART_CELL1, LV_STATE_DEFAULT, 5);
-    lv_obj_set_style_local_pad_bottom(run_table_materialList, LV_TABLE_PART_CELL1, LV_STATE_DEFAULT, 5);
-    lv_obj_set_style_local_pad_left(run_table_materialList, LV_TABLE_PART_CELL1, LV_STATE_DEFAULT, 5);
-    lv_obj_set_style_local_pad_right(run_table_materialList, LV_TABLE_PART_CELL1, LV_STATE_DEFAULT, 5);
+    static lv_style_t style_basic_table;
+    lv_style_init(&style_basic_table);
+
+    lv_style_set_pad_top(&style_basic_table, LV_STATE_DEFAULT, 7);
+    lv_style_set_pad_bottom(&style_basic_table, LV_STATE_DEFAULT, 7);
+    lv_style_set_pad_left(&style_basic_table, LV_STATE_DEFAULT, 8);
+    lv_style_set_pad_right(&style_basic_table, LV_STATE_DEFAULT, 8);
+
+    lv_obj_add_style(run_table_materialList, LV_TABLE_PART_CELL1, &style_basic_table);
+    lv_obj_add_style(run_table_materialList, LV_TABLE_PART_CELL2, &style_basic_table); // green Text
+    lv_obj_add_style(run_table_materialList, LV_TABLE_PART_CELL3, &style_basic_table); // Red Text
+
+    lv_obj_set_style_local_text_color(run_table_materialList, LV_TABLE_PART_CELL2, LV_STATE_DEFAULT, LV_COLOR_GREEN);
+    lv_obj_set_style_local_text_color(run_table_materialList, LV_TABLE_PART_CELL3, LV_STATE_DEFAULT, LV_COLOR_RED);
 
 
+    for (int row = 0; row < 5; row++)
+    {
+        lv_table_set_cell_align(run_table_materialList, row, 0, LV_LABEL_ALIGN_LEFT);
+        lv_table_set_cell_align(run_table_materialList, row, 1, LV_LABEL_ALIGN_RIGHT);
+        lv_table_set_cell_align(run_table_materialList, row, 2, LV_LABEL_ALIGN_CENTER);
+    }
     
-    
-    lv_table_set_col_width(run_table_materialList, 0, 100);
+    lv_table_set_col_width(run_table_materialList, 0, dispWidth - (10+16+17 + 60 + 25));
     lv_table_set_col_width(run_table_materialList, 1, 60);
-    lv_table_set_col_width(run_table_materialList, 2, 30);
- // lv_table_set_cell_type(run_table_materialList, 0, 0, 1);
- // lv_table_set_cell_type(run_table_materialList, 0, 1, 1);
- // lv_table_set_cell_type(run_table_materialList, 0, 2, 1);
+    lv_table_set_col_width(run_table_materialList, 2, 25);
 
     lv_table_set_cell_value(run_table_materialList, 0, 0, "PLA");
     lv_table_set_cell_value(run_table_materialList, 0, 1, "40°C");
-    lv_table_set_cell_value(run_table_materialList, 0, 2, LV_SYMBOL_OK);
+    lv_table_set_cell_value(run_table_materialList, 0, 2, LV_SYMBOL_OK );
+    lv_table_set_cell_type(run_table_materialList, 0, 2, 2); // Green
 
     lv_table_set_cell_value(run_table_materialList, 1, 0, "ABS");
     lv_table_set_cell_value(run_table_materialList, 1, 1, "45°C");
     lv_table_set_cell_value(run_table_materialList, 1, 2, LV_SYMBOL_OK);
+    lv_table_set_cell_type(run_table_materialList, 1, 2, 2); // Green
 
     lv_table_set_cell_value(run_table_materialList, 2, 0, "PETG");
     lv_table_set_cell_value(run_table_materialList, 2, 1, "50°C");
     lv_table_set_cell_value(run_table_materialList, 2, 2, LV_SYMBOL_CLOSE);
+    lv_table_set_cell_type(run_table_materialList, 2, 2, 3); // Red
+
+    lv_obj_move_foreground(run_line_materialList);
 
 
     
@@ -269,11 +303,11 @@ void run_group_cb (lv_group_t * group)
     lv_obj_t * focusedObj = lv_group_get_focused(group);
      if(focusedObj == run_btn_back)
      {
-         lv_page_scroll_ver(run_page, -100);
+        lv_page_scroll_ver(run_page, -100);
      }
      else if (focusedObj == run_label_temperature_title)
      {
-         lv_page_scroll_ver(run_page, 100);
+        lv_page_scroll_ver(run_page, 100);
      }
 }
 
@@ -323,6 +357,27 @@ void run_btn_materials_cb(lv_obj_t * obj, lv_event_t event)
         lv_group_remove_all_objs(group);
         lv_group_add_obj(group, run_page_materialList);
         lv_group_set_editing(group, true);
+        break;
+    
+    default:
+        break;
+    }
+}
+
+void run_page_materialList_cb(lv_obj_t * obj, lv_event_t event)
+{
+    switch (event)
+    {
+    case LV_EVENT_CLICKED:
+        lv_obj_set_hidden(run_container_materialList, true);
+
+        lv_group_remove_all_objs(group);
+        lv_group_add_obj(group, run_label_temperature_title);
+        lv_group_add_obj(group, run_btn_back);
+        lv_group_add_obj(group, run_btn_pause);
+        lv_group_add_obj(group, run_btn_materials);
+        lv_group_focus_obj(run_btn_materials);
+        lv_page_scroll_ver(run_page, -100);
         break;
     
     default:
