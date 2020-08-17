@@ -34,8 +34,9 @@ lv_obj_t *run_btn_materials;
 lv_obj_t *run_label_materials;
 
 lv_obj_t *run_container_materialList;
+lv_obj_t *run_page_materialList;
 lv_obj_t *run_label_materialList;
-lv_obj_t *run_list_materialList;
+lv_obj_t *run_table_materialList;
 
 lv_obj_t* run_page_init(lv_obj_t *tabs)
 {
@@ -43,7 +44,7 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     /*------------------------------------Tabs--------------------------------------*/
     run_page = lv_tabview_add_tab(tabs, "Run");
     
-    //lv_page_set_scrollbar_mode(run_page, LV_SCROLLBAR_MODE_OFF);
+    lv_page_set_scrollbar_mode(run_page, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_local_pad_top(run_page, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_pad_bottom(run_page, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_pad_left(run_page, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
@@ -135,7 +136,7 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     /*---------------------------------button Back-----------------------------------*/
     run_btn_back = lv_btn_create (run_page, NULL);
     lv_obj_align(run_btn_back, NULL, LV_ALIGN_IN_TOP_LEFT, 8, 105);
-    lv_obj_set_size(run_btn_back, dispWidth-(27+8+60), 25);
+    lv_obj_set_size(run_btn_back, dispWidth-(16+8+70), 25);
     lv_obj_set_event_cb(run_btn_back, setup_btn_back_cb);
     lv_obj_add_style(run_btn_back, LV_BTN_PART_MAIN, &style_btn);
 
@@ -145,10 +146,11 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     /*---------------------------------button pause-----------------------------------*/
     run_btn_pause = lv_btn_create (run_page, NULL);
     //lv_obj_align(run_btn_materials, NULL, LV_ALIGN_IN_TOP_LEFT, 5, 75);
-    lv_obj_align(run_btn_pause, NULL, LV_ALIGN_IN_TOP_LEFT, dispWidth-(27+8+60)+16, 105);
-    lv_obj_set_size(run_btn_pause, 60, 25);
-    lv_obj_set_event_cb(run_btn_pause, setup_btn_back_cb);
+    lv_obj_align(run_btn_pause, NULL, LV_ALIGN_IN_TOP_LEFT, dispWidth-(16+8+70)+16, 105);
+    lv_obj_set_size(run_btn_pause, 70, 25);
+    lv_obj_set_event_cb(run_btn_pause, run_btn_pause_cb);
     lv_obj_add_style(run_btn_pause, LV_BTN_PART_MAIN, &style_btn);
+    lv_btn_set_checkable(run_btn_pause, true);
 
     run_label_pause = lv_label_create(run_btn_pause, NULL);
     lv_label_set_text(run_label_pause, "Pause");
@@ -158,7 +160,7 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     run_btn_materials = lv_btn_create (run_page, NULL);
     //lv_obj_align(run_btn_materials, NULL, LV_ALIGN_IN_TOP_LEFT, 5, 75);
     lv_obj_align(run_btn_materials, NULL, LV_ALIGN_IN_TOP_LEFT, 8, 105+32);
-    lv_obj_set_size(run_btn_materials, dispWidth - 27, 25);
+    lv_obj_set_size(run_btn_materials, dispWidth - 16, 25);
     lv_obj_set_event_cb(run_btn_materials, setup_btn_back_cb);
     lv_obj_add_style(run_btn_materials, LV_BTN_PART_MAIN, &style_btn);
 
@@ -174,22 +176,67 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_obj_set_hidden(run_container_materialList, true);
 
     run_label_materialList = lv_label_create(run_container_materialList, NULL);
-    lv_obj_align(run_label_materialList, NULL, LV_ALIGN_IN_TOP_MID, 0, 8);
-    lv_label_set_align(run_label_materialList, LV_LABEL_ALIGN_CENTER);
     lv_label_set_text(run_label_materialList, "Compatible Materials:");
+    lv_obj_align(run_label_materialList, run_container_materialList, LV_ALIGN_IN_TOP_MID, 0, 8);
+    lv_label_set_align(run_label_materialList, LV_LABEL_ALIGN_CENTER);
+    
 
-    run_list_materialList = lv_table_create(run_container_materialList, NULL);
-    lv_obj_align(run_label_materialList, run_label_materialList, LV_ALIGN_IN_TOP_LEFT, 10, 20);
-    lv_table_set_col_width(run_list_materialList, 0, dispWidth - 20 - 30);
-    lv_table_set_col_width(run_list_materialList, 1, 30);
-    lv_table_set_cell_type(run_list_materialList, 0, 0, 1);
-    lv_table_set_cell_type(run_list_materialList, 0, 1, 1);
+    run_page_materialList = lv_page_create(run_container_materialList, NULL);
+    lv_obj_set_size(run_page_materialList, dispWidth - 10, dispHeight - (10 + 30) );
+    lv_obj_align(run_page_materialList, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 30);
 
-    lv_table_set_cell_value(run_list_materialList, 0, 0, "Material");
-    lv_table_set_cell_value(run_list_materialList, 0, 1, "Compatibility");
+    lv_obj_set_style_local_pad_top(run_page_materialList, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_bottom(run_page_materialList, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_left(run_page_materialList, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_right(run_page_materialList, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
 
-    lv_table_set_cell_value(run_list_materialList, 1, 0, "PLA");
-    lv_table_set_cell_value(run_list_materialList, 1, 1, LV_SYMBOL_OK);
+    lv_obj_set_style_local_pad_top(run_page_materialList, LV_PAGE_PART_SCROLLABLE, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_bottom(run_page_materialList, LV_PAGE_PART_SCROLLABLE, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_left(run_page_materialList, LV_PAGE_PART_SCROLLABLE, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_right(run_page_materialList, LV_PAGE_PART_SCROLLABLE, LV_STATE_DEFAULT, 0);
+
+    lv_obj_set_style_local_pad_right(run_page_materialList, LV_PAGE_PART_SCROLLBAR, LV_STATE_DEFAULT, 0);
+
+    lv_obj_set_style_local_border_width(run_page_materialList, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_border_width(run_page_materialList, LV_PAGE_PART_SCROLLABLE, LV_STATE_DEFAULT, 0);
+    
+
+    run_table_materialList = lv_table_create(run_page_materialList, NULL);
+    lv_table_set_col_cnt(run_table_materialList, 3);
+    lv_table_set_row_cnt(run_table_materialList, 5);
+    lv_obj_align(run_table_materialList, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+
+    lv_obj_set_style_local_pad_top(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_bottom(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_left(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_pad_right(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 0);
+
+    lv_obj_set_style_local_pad_top(run_table_materialList, LV_TABLE_PART_CELL1, LV_STATE_DEFAULT, 5);
+    lv_obj_set_style_local_pad_bottom(run_table_materialList, LV_TABLE_PART_CELL1, LV_STATE_DEFAULT, 5);
+    lv_obj_set_style_local_pad_left(run_table_materialList, LV_TABLE_PART_CELL1, LV_STATE_DEFAULT, 5);
+    lv_obj_set_style_local_pad_right(run_table_materialList, LV_TABLE_PART_CELL1, LV_STATE_DEFAULT, 5);
+
+
+    
+    
+    lv_table_set_col_width(run_table_materialList, 0, 100);
+    lv_table_set_col_width(run_table_materialList, 1, 60);
+    lv_table_set_col_width(run_table_materialList, 2, 30);
+ // lv_table_set_cell_type(run_table_materialList, 0, 0, 1);
+ // lv_table_set_cell_type(run_table_materialList, 0, 1, 1);
+ // lv_table_set_cell_type(run_table_materialList, 0, 2, 1);
+
+    lv_table_set_cell_value(run_table_materialList, 0, 0, "PLA");
+    lv_table_set_cell_value(run_table_materialList, 0, 1, "40°C");
+    lv_table_set_cell_value(run_table_materialList, 0, 2, LV_SYMBOL_OK);
+
+    lv_table_set_cell_value(run_table_materialList, 1, 0, "ABS");
+    lv_table_set_cell_value(run_table_materialList, 1, 1, "45°C");
+    lv_table_set_cell_value(run_table_materialList, 1, 2, LV_SYMBOL_OK);
+
+    lv_table_set_cell_value(run_table_materialList, 2, 0, "PETG");
+    lv_table_set_cell_value(run_table_materialList, 2, 1, "50°C");
+    lv_table_set_cell_value(run_table_materialList, 2, 2, LV_SYMBOL_CLOSE);
 
 
     
@@ -222,7 +269,7 @@ void run_group_cb (lv_group_t * group)
     lv_obj_t * focusedObj = lv_group_get_focused(group);
      if(focusedObj == run_btn_back)
      {
-         lv_page_focus(run_page, run_btn_materials, LV_ANIM_ON);
+         lv_page_scroll_ver(run_page, -100);
      }
      else if (focusedObj == run_label_temperature_title)
      {
@@ -243,12 +290,39 @@ void run_btn_back_cb(lv_obj_t * obj, lv_event_t event)
     }
 }
 
+void run_btn_pause_cb(lv_obj_t * obj, lv_event_t event)
+{
+    switch (event)
+    {
+    case LV_EVENT_CLICKED:
+        {
+            lv_btn_state_t state = lv_btn_get_state(run_btn_pause);
+
+            if (state == LV_BTN_STATE_CHECKED_RELEASED)
+            {
+                lv_label_set_text(run_label_pause, "Resume");
+            }
+            else if (state == LV_BTN_STATE_RELEASED)
+            {
+                lv_label_set_text(run_label_pause, "Pause");
+            }
+        }
+        break;
+    
+    default:
+        break;
+    }
+}
+
 void run_btn_materials_cb(lv_obj_t * obj, lv_event_t event)
 {
     switch (event)
     {
     case LV_EVENT_CLICKED:
         lv_obj_set_hidden(run_container_materialList, false);
+        lv_group_remove_all_objs(group);
+        lv_group_add_obj(group, run_page_materialList);
+        lv_group_set_editing(group, true);
         break;
     
     default:

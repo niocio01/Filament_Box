@@ -62,7 +62,7 @@ lv_obj_t* setup_page_init(lv_obj_t * tabs)
     /* --------------------------------------------Buttons-----------------------------------------*/
     setup_btn_back = lv_btn_create(setup_page, NULL);
     lv_obj_align(setup_btn_back, setup_page, LV_ALIGN_IN_TOP_LEFT, 8, 5);
-    lv_obj_set_size(setup_btn_back, dispWidth-(16+10+50), 22);
+    lv_obj_set_size(setup_btn_back, dispWidth-(16+10+50), 25);
     lv_obj_set_event_cb(setup_btn_back, setup_btn_back_cb);
     lv_obj_add_style(setup_btn_back, LV_BTN_PART_MAIN, &style_btn);
 
@@ -72,7 +72,7 @@ lv_obj_t* setup_page_init(lv_obj_t * tabs)
 
     setup_btn_run = lv_btn_create(setup_page, NULL);
     lv_obj_align(setup_btn_run, setup_page, LV_ALIGN_IN_TOP_LEFT, dispWidth-(16+10+50)+18, 5);
-    lv_obj_set_size(setup_btn_run, 50, 22);
+    lv_obj_set_size(setup_btn_run, 50, 25);
     lv_obj_set_event_cb(setup_btn_run, setup_btn_run_cb);
     lv_obj_add_style(setup_btn_run, LV_BTN_PART_MAIN, &style_btn);
 
@@ -81,7 +81,7 @@ lv_obj_t* setup_page_init(lv_obj_t * tabs)
 
     /* --------------------------------------------Temperature-----------------------------------------*/
     setup_slider_temperature = lv_slider_create(setup_page, NULL);
-    lv_obj_align(setup_slider_temperature, setup_btn_back, LV_ALIGN_OUT_BOTTOM_LEFT, 5, 12);
+    lv_obj_align(setup_slider_temperature, setup_btn_back, LV_ALIGN_OUT_BOTTOM_LEFT, 5, 9);
     lv_slider_set_type(setup_slider_temperature, LV_SLIDER_TYPE_NORMAL);
     lv_obj_set_width(setup_slider_temperature, 115);
     lv_obj_set_height(setup_slider_temperature, 10);
