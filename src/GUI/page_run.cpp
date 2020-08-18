@@ -22,7 +22,6 @@ lv_obj_t *run_led_humidity;
 
 lv_obj_t *run_label_time_title;
 lv_obj_t *run_label_time_value;
-lv_obj_t *run_label_time_setpoint;
 
 lv_obj_t *run_btn_back;
 lv_obj_t *run_label_back;
@@ -38,6 +37,13 @@ lv_obj_t *run_page_materialList;
 lv_obj_t *run_label_materialList;
 lv_obj_t *run_line_materialList;
 lv_obj_t *run_table_materialList;
+
+uint8_t run_remainingTime_days = 0;
+uint8_t run_remainingTime_hours = 0;
+uint8_t run_remainingTime_minutes = 0;
+uint8_t run_remainingTime_seconds = 0;
+
+bool run_paused = true;
 
 lv_obj_t* run_page_init(lv_obj_t *tabs)
 {
@@ -273,8 +279,8 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_obj_move_foreground(run_line_materialList);
 
 
-    
     xTaskCreate(toggleTask, "Toggle_task", 1024 * 4, NULL, 1, NULL);
+    xTaskCreate(run_timeTask, "Run_TimeTask", 1024 * 4, NULL, 5, NULL);
 
 
     return run_page;
@@ -288,6 +294,17 @@ void run_setTab(void)
     lv_group_add_obj(group, run_btn_back);
     lv_group_add_obj(group, run_btn_pause);
     lv_group_add_obj(group, run_btn_materials);
+
+    lv_label_set_text_fmt(run_label_temperature_setpoint, "/ %d°C", profilesByID[CUSTOM]->temperature);
+    lv_label_set_text_fmt(run_label_humidity_setpoint, "/ %d%%", profilesByID[CUSTOM]->humidity);
+    lv_label_set_text_fmt(run_label_time_value, "%d:%02d:%02d:00", profilesByID[CUSTOM]->time.days, profilesByID[CUSTOM]->time.hours, profilesByID[CUSTOM]->time.minutes);
+
+    run_remainingTime_days = profilesByID[CUSTOM]->time.days;
+    run_remainingTime_hours = profilesByID[CUSTOM]->time.hours;
+    run_remainingTime_minutes = profilesByID[CUSTOM]->time.minutes;
+    run_remainingTime_seconds = 0;
+
+    run_paused = false;
 
     char str1[40];
     char str2[40];
@@ -334,10 +351,12 @@ void run_btn_pause_cb(lv_obj_t * obj, lv_event_t event)
 
             if (state == LV_BTN_STATE_CHECKED_RELEASED)
             {
+                run_paused = true;
                 lv_label_set_text(run_label_pause, "Resume");
             }
             else if (state == LV_BTN_STATE_RELEASED)
             {
+                run_paused = false;
                 lv_label_set_text(run_label_pause, "Pause");
             }
         }
@@ -385,18 +404,66 @@ void run_page_materialList_cb(lv_obj_t * obj, lv_event_t event)
     }
 }
 
-void run_toggle_led(void)
+void run_timeTask(void *pvParameter)
 {
-    lv_led_toggle(run_led_temperature);
-    lv_led_toggle(run_led_humidity);
+
+    TickType_t xLastWakeTime;
+    xLastWakeTime = xTaskGetTickCount ();
+
+    while (1)
+    {
+        if (run_paused == false)
+        {
+            if (run_remainingTime_seconds > 0)
+            {
+                run_remainingTime_seconds--;
+            }
+            else
+            {
+                if (run_remainingTime_minutes > 0)
+                {
+                    run_remainingTime_seconds = 59;
+                    run_remainingTime_minutes--;
+                }
+                else
+                {
+                    if (run_remainingTime_hours > 0)
+                    {
+                        run_remainingTime_minutes = 59;
+                        run_remainingTime_seconds = 59;
+                        run_remainingTime_hours--;
+                    }
+                    else
+                    {
+                        if (run_remainingTime_days > 0)
+                        {
+                            run_remainingTime_hours = 23;
+                            run_remainingTime_minutes = 59;
+                            run_remainingTime_seconds = 59;
+                            run_remainingTime_days--;
+                        }
+                        else
+                        {
+                            Serial.println("time Over.");
+                        }
+                    }
+                }
+            }
+        lv_label_set_text_fmt(run_label_time_value, "%d:%02d:%02d:%02d", run_remainingTime_days, run_remainingTime_hours, run_remainingTime_minutes, run_remainingTime_seconds);
+        }
+
+        vTaskDelayUntil( &xLastWakeTime, 1000 / portTICK_PERIOD_MS);
+
+    }
 }
 
 void toggleTask(void *pvParameter)
 {
     while (1)
     {
-        run_toggle_led();
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        lv_led_toggle(run_led_temperature);
+        lv_led_toggle(run_led_humidity);
+        vTaskDelay(1500 / portTICK_PERIOD_MS);
     }
 }
 
