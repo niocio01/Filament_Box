@@ -3,3 +3,5 @@
 /.pio/*
 /.vscode
 /sdkconfig
+/include/credentials.h
+include/credentials.h

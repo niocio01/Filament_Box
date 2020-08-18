@@ -7,11 +7,15 @@
 #include <sdkconfig.h>
 #include <Arduino.h>
 
+#include "OTA.h"
+
 #include "blink.h"
 #include "temp.h"
 #include "heater.h"
 #include "webinterface.h"
 #include "GUI/display.h"
+
+void main_Task(void *pvParameter);
 
 extern "C" void app_main()
 {
@@ -23,10 +27,23 @@ extern "C" void app_main()
     Serial.begin(115200);
     Serial.println("Startup done!");
 
+    setupOTA("FilamentBox");
+
     // initBlink();
     //initServer();
     initTemp();
     //initHeater();
     display_init();
 
+    xTaskCreate(&main_Task, "main_Task", 1024*4, NULL, 5, NULL);
+    
+}
+
+void main_Task(void *pvParameter)
+{
+    while(1)
+    {
+        ArduinoOTA.handle();
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+    }
 }

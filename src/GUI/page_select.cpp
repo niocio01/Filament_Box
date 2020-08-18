@@ -17,7 +17,7 @@ uint8_t btnm_id_map_stripped[(sizeof(btnm_id_map)/sizeof(btnm_id_map[0]))];
 
 lv_obj_t* select_page_init(lv_obj_t * tabs)
 {
-    select_Page = lv_tabview_add_tab(tabs, "Select");
+    select_Page = lv_tabview_add_tab(tabs, "Nico");
     lv_page_set_scrollbar_mode(select_Page, LV_SCROLLBAR_MODE_OFF);
 
     static const char* linebreak = {"\n"};

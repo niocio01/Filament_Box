@@ -9,6 +9,8 @@
 #include "GUI/page_setup.h"
 #include "GUI/page_run.h"
 
+TaskHandle_t run_UpdateValues_TaskHandle;
+
 lv_obj_t *run_page;
 
 lv_obj_t *run_label_temperature_title;
@@ -265,7 +267,8 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
 
     lv_obj_move_foreground(run_line_materialList);
 
-    xTaskCreate(run_UpdateValues_Task, "Run_TimeTask", 1024 * 4, NULL, 5, NULL);
+    xTaskCreate(run_UpdateValues_Task, "Run_TimeTask", 1024 * 4, NULL, 5, &run_UpdateValues_TaskHandle);
+    vTaskSuspend(run_UpdateValues_TaskHandle);
 
     return run_page;
 }
@@ -320,7 +323,10 @@ void run_setTab(void)
             lv_table_set_cell_type(run_table_materialList, row, 2, 3); // Red
         }
     }
-    lv_page_scroll_ver(run_page_materialList, 500); // go to top
+    lv_page_scroll_ver(run_page_materialList, 100); // go to top
+    lv_page_scroll_ver(run_page, 500);
+
+    vTaskResume(run_UpdateValues_TaskHandle);
 }
 
 void run_group_cb (lv_group_t * group)

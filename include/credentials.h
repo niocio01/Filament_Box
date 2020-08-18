@@ -1,8 +1,8 @@
 #ifndef __CREDENTIALS_H__
 #define __CREDENTIALS_H__
 
-//#define HOME
-#define MOBILE
+#define HOME
+//#define MOBILE
 
 #ifdef HOME
     #define mySSID "The Promised LAN"
