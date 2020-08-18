@@ -206,6 +206,7 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_obj_set_size(run_page_materialList, dispWidth - 10, dispHeight - (10 + 33 + 5) );
     lv_obj_align(run_page_materialList, run_container_materialList, LV_ALIGN_IN_TOP_LEFT, 0, 30);
     lv_obj_set_event_cb(run_page_materialList, run_page_materialList_cb);
+    lv_page_set_anim_time(run_page_materialList, 120);
 
     lv_obj_set_style_local_pad_top(run_page_materialList, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_pad_bottom(run_page_materialList, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
@@ -250,7 +251,7 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_obj_set_style_local_text_color(run_table_materialList, LV_TABLE_PART_CELL3, LV_STATE_DEFAULT, LV_COLOR_RED);
 
 
-    for (int row = 0; row < 5; row++)
+    for (int row = 0; row < noOfProfiles; row++)
     {
         lv_table_set_cell_align(run_table_materialList, row, 0, LV_LABEL_ALIGN_LEFT);
         lv_table_set_cell_align(run_table_materialList, row, 1, LV_LABEL_ALIGN_RIGHT);
@@ -291,13 +292,16 @@ void run_setTab(void)
 
     run_paused = false;
 
-    char str1[40];
-    char str2[40];
-    strcpy(str1, "Stop: ");
-    strcpy(str2, profilesByID[CUSTOM]->name);
-    strcat(str1, str2);
 
-    lv_label_set_text(run_label_back, str1);
+    bool profilesAreTheSame = profiles_Compare_CurrentToPreset();
+
+    char str[40];
+    strcpy(str, "Stop: ");
+
+    profilesAreTheSame ? strcat(str, profilesByID[profilesByID[CUSTOM]->id]->name) : strcat(str, profilesByID[CUSTOM]->name) ;
+
+    lv_label_set_text(run_label_back, str);
+
 
     for (int row = 0; row < noOfProfiles; row++)
     {
@@ -318,6 +322,7 @@ void run_setTab(void)
             lv_table_set_cell_type(run_table_materialList, row, 2, 3); // Red
         }
     }
+    lv_page_scroll_ver(run_page_materialList, 500); // go to top
 }
 
 void run_group_cb (lv_group_t * group)

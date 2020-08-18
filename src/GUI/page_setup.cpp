@@ -171,8 +171,6 @@ void setup_updateProfileName(void)
 
     bool profilesAreTheSame = profiles_Compare_CurrentToPreset();
 
-    Serial.print(profilesAreTheSame);
-
     if( !profilesAreTheSame && !changedTagSet) // if not the same and tag not set
     {
         changedTagSet = true;
