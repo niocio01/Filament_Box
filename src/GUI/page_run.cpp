@@ -134,7 +134,7 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_obj_align(run_label_time_title, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 8+33+33);
     
     run_label_time_value = lv_label_create(run_page, NULL);
-    lv_label_set_text(run_label_time_value, "0:03:25:40");
+    lv_label_set_text(run_label_time_value, "0:00:00:00");
     lv_label_set_recolor(run_label_time_value, true);
     lv_obj_align(run_label_time_value, NULL, LV_ALIGN_IN_TOP_LEFT, 70, 1+33+33);
     lv_obj_add_style(run_label_time_value, LV_LABEL_PART_MAIN, &font_Large);
@@ -225,11 +225,11 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
 
     run_table_materialList = lv_table_create(run_page_materialList, NULL);
     lv_table_set_col_cnt(run_table_materialList, 3);
-    lv_table_set_row_cnt(run_table_materialList, 5);
+    lv_table_set_row_cnt(run_table_materialList, noOfProfiles);
     lv_obj_align(run_table_materialList, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
 
     lv_obj_set_style_local_pad_top(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 0);
-    lv_obj_set_style_local_pad_bottom(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 8);
+    lv_obj_set_style_local_pad_bottom(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_pad_left(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 8);
     lv_obj_set_style_local_pad_right(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 8);
     lv_obj_set_style_local_border_width(run_table_materialList, LV_TABLE_PART_BG, LV_STATE_DEFAULT, 0);
@@ -260,21 +260,6 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_table_set_col_width(run_table_materialList, 0, dispWidth - (10+16+17 + 60 + 25));
     lv_table_set_col_width(run_table_materialList, 1, 60);
     lv_table_set_col_width(run_table_materialList, 2, 25);
-
-    lv_table_set_cell_value(run_table_materialList, 0, 0, "PLA");
-    lv_table_set_cell_value(run_table_materialList, 0, 1, "40°C");
-    lv_table_set_cell_value(run_table_materialList, 0, 2, LV_SYMBOL_OK );
-    lv_table_set_cell_type(run_table_materialList, 0, 2, 2); // Green
-
-    lv_table_set_cell_value(run_table_materialList, 1, 0, "ABS");
-    lv_table_set_cell_value(run_table_materialList, 1, 1, "45°C");
-    lv_table_set_cell_value(run_table_materialList, 1, 2, LV_SYMBOL_OK);
-    lv_table_set_cell_type(run_table_materialList, 1, 2, 2); // Green
-
-    lv_table_set_cell_value(run_table_materialList, 2, 0, "PETG");
-    lv_table_set_cell_value(run_table_materialList, 2, 1, "50°C");
-    lv_table_set_cell_value(run_table_materialList, 2, 2, LV_SYMBOL_CLOSE);
-    lv_table_set_cell_type(run_table_materialList, 2, 2, 3); // Red
 
     lv_obj_move_foreground(run_line_materialList);
 
@@ -313,6 +298,26 @@ void run_setTab(void)
     strcat(str1, str2);
 
     lv_label_set_text(run_label_back, str1);
+
+    for (int row = 0; row < noOfProfiles; row++)
+    {
+        lv_table_set_cell_value(run_table_materialList, row, 0, profilesByTemperature[row]->name);
+
+        char str[40];
+        sprintf(str, "%d°C", profilesByTemperature[row]->temperature);
+        lv_table_set_cell_value(run_table_materialList, row, 1, str);
+
+        if (profilesByID[CUSTOM]->temperature >= profilesByTemperature[row]->temperature )
+        {
+            lv_table_set_cell_value(run_table_materialList, row, 2, LV_SYMBOL_OK );
+            lv_table_set_cell_type(run_table_materialList, row, 2, 2); // Green
+        }
+        else
+        {
+            lv_table_set_cell_value(run_table_materialList, row, 2, LV_SYMBOL_CLOSE);
+            lv_table_set_cell_type(run_table_materialList, row, 2, 3); // Red
+        }
+    }
 }
 
 void run_group_cb (lv_group_t * group)

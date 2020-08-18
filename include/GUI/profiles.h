@@ -38,6 +38,8 @@ typedef struct profile_t
 extern struct profile_t * profilesByTemperature[20];
 extern struct profile_t * profilesByID[20];
 
+extern uint8_t noOfProfiles;
+
 void profiles_init(void);
 void profiles_addProfile(profile_t * profile);
 
