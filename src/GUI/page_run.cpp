@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <lvgl.h>
 
+#include "temp.h"
 #include "GUI/display.h"
 #include "GUI/nav.h"
 #include "GUI/profiles.h"
@@ -98,7 +99,7 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_obj_align(run_led_temperature, NULL, LV_ALIGN_IN_TOP_LEFT, 197, 8);
     lv_obj_set_size(run_led_temperature, 20, 18);
 
-    lv_obj_set_style_local_shadow_spread(run_led_temperature, LV_LED_PART_MAIN, LV_STATE_DEFAULT, 5);
+    lv_obj_set_style_local_shadow_spread(run_led_temperature, LV_LED_PART_MAIN, LV_STATE_DEFAULT, 4);
     lv_obj_set_style_local_shadow_opa(run_led_temperature, LV_LED_PART_MAIN, LV_STATE_DEFAULT, 127);
 
     /*---------------------------------Humidity-----------------------------------*/
@@ -122,12 +123,12 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
     lv_obj_align(run_led_humidity, NULL, LV_ALIGN_IN_TOP_LEFT, 197, 8+33);
     lv_obj_set_size(run_led_humidity, 20, 18);
 
-    lv_obj_set_style_local_shadow_spread(run_led_humidity, LV_LED_PART_MAIN, LV_STATE_DEFAULT, 5);
+    lv_obj_set_style_local_shadow_spread(run_led_humidity, LV_LED_PART_MAIN, LV_STATE_DEFAULT, 4);
     lv_obj_set_style_local_shadow_opa(run_led_humidity, LV_LED_PART_MAIN, LV_STATE_DEFAULT, 127);
     lv_obj_set_style_local_bg_color(run_led_humidity, LV_LED_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLUE);
     lv_obj_set_style_local_shadow_color(run_led_humidity, LV_LED_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLUE);
 
-    /*---------------------------------Humidity-----------------------------------*/
+    /*---------------------------------Time-----------------------------------*/
 
     run_label_time_title = lv_label_create(run_page, NULL);
     lv_label_set_text(run_label_time_title, "Time:");
@@ -264,10 +265,7 @@ lv_obj_t* run_page_init(lv_obj_t *tabs)
 
     lv_obj_move_foreground(run_line_materialList);
 
-
-    xTaskCreate(toggleTask, "Toggle_task", 1024 * 4, NULL, 1, NULL);
-    xTaskCreate(run_timeTask, "Run_TimeTask", 1024 * 4, NULL, 5, NULL);
-
+    xTaskCreate(run_UpdateValues_Task, "Run_TimeTask", 1024 * 4, NULL, 5, NULL);
 
     return run_page;
 }
@@ -414,7 +412,7 @@ void run_page_materialList_cb(lv_obj_t * obj, lv_event_t event)
     }
 }
 
-void run_timeTask(void *pvParameter)
+void run_UpdateValues_Task(void *pvParameter)
 {
 
     TickType_t xLastWakeTime;
@@ -462,18 +460,17 @@ void run_timeTask(void *pvParameter)
         lv_label_set_text_fmt(run_label_time_value, "%d:%02d:%02d:%02d", run_remainingTime_days, run_remainingTime_hours, run_remainingTime_minutes, run_remainingTime_seconds);
         }
 
+        char str[10];
+
+        sprintf(str, "%.1f", getTemperature(AHT10_1));
+        lv_label_set_text(run_label_temperature_value, str);
+
+        sprintf(str, "%.1f", getHumitity());
+        lv_label_set_text(run_label_humidity_value, str);
+
         vTaskDelayUntil( &xLastWakeTime, 1000 / portTICK_PERIOD_MS);
 
     }
 }
 
-void toggleTask(void *pvParameter)
-{
-    while (1)
-    {
-        lv_led_toggle(run_led_temperature);
-        lv_led_toggle(run_led_humidity);
-        vTaskDelay(1500 / portTICK_PERIOD_MS);
-    }
-}
 

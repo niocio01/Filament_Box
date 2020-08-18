@@ -25,7 +25,7 @@ extern "C" void app_main()
 
     // initBlink();
     //initServer();
-    //initTemp();
+    initTemp();
     //initHeater();
     display_init();
 

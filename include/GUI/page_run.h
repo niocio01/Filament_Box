@@ -12,8 +12,7 @@ void run_btn_pause_cb(lv_obj_t * obj, lv_event_t event);
 void run_btn_materials_cb(lv_obj_t * obj, lv_event_t event);
 void run_page_materialList_cb(lv_obj_t * obj, lv_event_t event);
 
-void run_timeTask(void *pvParameter);
-void toggleTask(void *pvParameter);
+void run_UpdateValues_Task(void *pvParameter);
 
 
 #endif // __PAGE_RUN_H__

@@ -278,7 +278,7 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
  * LV_LOG_LEVEL_ERROR       Only critical issue, when the system may fail
  * LV_LOG_LEVEL_NONE        Do not log anything
  */
-#  define LV_LOG_LEVEL    LV_LOG_LEVEL_INFO
+#  define LV_LOG_LEVEL    LV_LOG_LEVEL_ERROR
 
 /* 1: Print the log with 'printf';
  * 0: user need to register a callback with `lv_log_register_print_cb`*/
@@ -298,7 +298,7 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
  * The behavior of asserts can be overwritten by redefining them here.
  * E.g. #define LV_ASSERT_MEM(p)  <my_assert_code>
  */
-#define LV_USE_DEBUG        1
+#define LV_USE_DEBUG        0
 #if LV_USE_DEBUG
 
 /*Check if the parameter is NULL. (Quite fast) */

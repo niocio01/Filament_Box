@@ -19,6 +19,10 @@ void initTemp(void);
 void ReadTemp_Task(void *pvParameter);
 void TempProtectionTask(void *pvParameter);
 
+void readTemperature_Thermister(void);
+void readTemperature_AH10_1(void);
+void readTemperature_ESP32(void);
+
 float getTemperature(TempSensors_t sensor);
 float getHumitity(void);
 
